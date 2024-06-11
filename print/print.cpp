@@ -1,13 +1,17 @@
 #include <iostream>
 #include <string>
-//#include <pybind11/pybind11.h>
+#include <pybind11/pybind11.h>
 
-using namespace std;
+namespace py = pybind11;
 
-int main()
+void println(std::string message)
 {
-	string message = "Print Project Working with Cmake.";
-	cout << message << endl;
+	std::cout << message << std::endl;
 }
 
-// NEED TO SETUP PYBIND11! testing commit to dev here.
+PYBIND11_MODULE(print, m)
+{
+	m.def("println", &println, "Prints a message to the console.");
+}
+
+// Follow tutorial and get my python module working here.
