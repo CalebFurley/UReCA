@@ -19,3 +19,4 @@ project ("UReCA")
 
 # Include sub-projects here..
 add_subdirectory ("print")
+add_subdirectory (pybind11) # Include the pybind11 library.
