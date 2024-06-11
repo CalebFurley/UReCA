@@ -1,5 +1,5 @@
-
-# GOAL OF PROJECT: Write a machine learning library in C++ that can be used in Python.
+# UReCA Summer Project 2024
+	# GOAL OF PROJECT: Write a machine learning library in C++ that can be used in Python.
 	# Current Goal: Write a print function in C++ that can be used in Python.
 
 --------------------------------------------------------------------------------------------------------------------
