@@ -15,5 +15,6 @@ target_link_libraries(print PRIVATE pybind11::pybind11)
 link_directories(C:/Users/caleb/AppData/Local/Programs/Python/Python312/libs)
 
 # Include Python Development Eviroment.
+set(Python3_USE_DEBUG_EXTENSION FALSE)
 find_package(Python3 COMPONENTS Development REQUIRED)
 target_link_libraries(print PRIVATE Python3::Python)
