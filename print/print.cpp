@@ -1,13 +1,35 @@
+#include <pybind11/pybind11.h>
 #include <iostream>
 #include <string>
-//#include <pybind11/pybind11.h>
 
-using namespace std;
+namespace py = pybind11;
 
-int main()
+void myPrint(std::string message)
 {
-	string message = "Print Project Working with Cmake.";
-	cout << message << endl;
+	std::cout << message << std::endl;
 }
 
-// NEED TO SETUP PYBIND11!
+PYBIND11_MODULE(myprint, m)
+{
+	m.def("myPrint", &myPrint, "Prints to the console.");
+}
+
+
+
+
+/* ADD FUNCTION IS WRITTEN BELOW
+
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
+
+int myAdd(int x, int y)
+{
+	return x + y;
+}
+
+PYBIND11_MODULE(myadd, m)
+{
+	m.def("myAdd", &myAdd, "Add two numbers.");
+}
+*/
