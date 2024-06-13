@@ -1,20 +1,17 @@
 ﻿# CMAKE FILE FOR PRINT PROJECT 
 #
 
+
 # Add core executables
-pybind11_add_module(print print.cpp)
+pybind11_add_module(myprint print.cpp)													# SET THE NAME OF THE MODULE
 
-# Find packages
-#find_package(fmt REQUIRED)
+# Link the pybind11 library.
+target_link_libraries(myprint PRIVATE pybind11::pybind11)								# SET THE NAME OF THE MODULE
 
-# Link packages
-#target_link_libraries(print fmt::fmt)
-target_link_libraries(print PRIVATE pybind11::pybind11)
-
-# Link the python312 library.
-link_directories(C:/Users/caleb/AppData/Local/Programs/Python/Python312/libs)
+# Link the python311 library.
+link_directories(C:/Users/caleb/AppData/Local/Programs/Python/Python311/libs)
 
 # Include Python Development Eviroment.
 set(Python3_USE_DEBUG_EXTENSION FALSE)
-find_package(Python3 COMPONENTS Development REQUIRED)
-target_link_libraries(print PRIVATE Python3::Python)
+find_package(Python3 3.11 COMPONENTS Development REQUIRED)
+target_link_libraries(myprint PRIVATE Python3::Python)									# SET THE NAME OF THE MODULE
