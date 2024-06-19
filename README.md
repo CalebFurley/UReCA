@@ -14,14 +14,13 @@ CMake is working, and boost is installed. Now to install pybind11 and test with 
 - Once pybind11 is installed, write out the print function, package up and test in the corresponding python file.
 
 --------------------------------------------------------------------------------------------------------------------
-CURRENT GOAL: Get pybind11 working with C++ and Python. Then finish the print function.
---------------------------------------------------------------------------------------------------------------------
+Get pybind11 working with C++ and Python. Then finish the print function.
 
+--------------------------------------------------------------------------------------------------------------------
+CURRENT GOAL::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 Once this is achieved, then can begin work on Linear Regression Model in C++. Package it for Python, and test with old python code
 stored on my one drive. (also need to install numpy and matplotlib for this) (also need to install pandas for this) (also need to install pip)
 	- Also install tensorflow for fun
 	- Also install pytorch for fun
-
 Think about writing out a scaler, a splitter, and other functions that are useful for machine learning. (look at old code and sklearn for ideas.)
-
 --------------------------------------------------------------------------------------------------------------------
