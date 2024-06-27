@@ -1,8 +1,8 @@
-﻿# CMAKE FOR REGRESSION MODELS
+﻿# CMAKE FOR MODELS
 #
 
 # Add core executables
-pybind11_add_module(models models.cpp)										# SET THE NAME OF THE MODULE
+pybind11_add_module(models models.cpp)													# SET THE NAME OF THE MODULE
 
 # Link the pybind11 library.
 target_link_libraries(models PRIVATE pybind11::pybind11)								# SET THE NAME OF THE MODULE

@@ -1,12 +1,12 @@
-from models import linear_regression
-from models import logistic_regression
-from models import k_nearest_neighbors
-from models import random_forest
-from tools import min_max_scaler
+import numpy as np
 
-linear_regression();
-logistic_regression();
-k_nearest_neighbors();
-random_forest();
+from models import LinearRegression
 
-min_max_scaler();
+X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
+y = np.array([[2, 1], [2, 2], [3, 2], [4, 3]])
+
+reg = LinearRegression(X, y, 1, 500);
+reg.train();
+reg.predict(np.array([[3, 5]]))
+score = reg.score(X, y);
+print(score)
