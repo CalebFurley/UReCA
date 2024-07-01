@@ -30,5 +30,9 @@
 --------------------------------------------------------------------------------------------------------------------
 	Build Linear Regression Model as a class
 	- a class allows to training and predicting with a single object
-	(### CURRENT ###)
+	(completed)
 --------------------------------------------------------------------------------------------------------------------
+	Build Logistic Regression Model
+	- utilize linear regression as a template
+	- import a classification dataset, diabetes?
+	(## CURRENT ##)
