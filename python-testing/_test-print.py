@@ -31,18 +31,18 @@ test_x, test_y = test.iloc[0:, 1:].values, test['price'].values
 scaler = StandardScaler()
 train_x = scaler.fit_transform(train_x)
 test_x = scaler.transform(test_x)  # Note: not fit_transform
-    
-#############################################
 
-
-#############################################
-############## Train model ##################
-#############################################
+# give space before training.
 print("About to train.\n\n\n")
 
-# Create a Linear Regression model
+##### TRAINING MODELS BELOW
+#####
+##### DONT FORGET TO REPLACE MODULES WITH NEWLY GENERATED MODULES!!!
+#####
+
+## Create a Linear Regression model
 model = LinearRegression()
-model.train(train_x, train_y, 0.01, 500)
+model.train(train_x, train_y, 0.1, 500)
 model.predict(test_x)
 score = model.score(test_x, test_y)
 print("R^2 Score = ", score)
