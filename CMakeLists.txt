@@ -17,6 +17,9 @@ endif()
 # Set the solution name.
 project ("UReCA")
 
+# Inlcude Eigen module for linear algebra.
+include_directories(${CMAKE_SOURCE_DIR}/external/eigen)
+
 # Include sub-projects here..
 add_subdirectory (pybind11) # Include the pybind11 library first.
 add_subdirectory ("print")
