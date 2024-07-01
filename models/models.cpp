@@ -80,8 +80,20 @@ public:
 	// Score method
 	double score(const MatrixXd& data_X, const MatrixXd& data_Y)
 	{
-		// Write this method.
-		return 0.0;
+		// Use model to get predictions.
+		MatrixXd predictions = predict(data_X);
+
+		// Calculate the total sum of squares.
+		double total_variance = (data_Y.array() - data_Y.mean()).square().sum();
+
+		// Calculate the residual sum of squares.
+		double residual_variance = (data_Y.array() - predictions.array()).square().sum();
+
+		// Calculate R^2 score.
+		double r2_score = 1 - (residual_variance / total_variance);
+
+		// Return the R^2 score.
+		return r2_score;
 	}
 
 };//lin-reg
