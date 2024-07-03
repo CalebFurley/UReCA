@@ -133,7 +133,7 @@ public:
 	/// <returns>a numpy vector of predicted y values for all data samples.</returns>
 	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float learning_rate, int epochs)
 	{
-		//todo
+		//TODO write out the logistic regression model's training method here.
 	}
 
 	/// <summary>
