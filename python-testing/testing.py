@@ -1,4 +1,3 @@
-from ast import Delete
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
@@ -6,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from models import LinearRegression
 from models import LogisticRegression
 
-scaler = StandardScaler()
+scaler = StandardScaler()                                # <------------------- remove standard scaler once testing against my scaler.
 
 
 # Import Data Sets

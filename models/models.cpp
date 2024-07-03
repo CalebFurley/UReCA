@@ -3,6 +3,7 @@
 #include <pybind11/eigen.h>
 #include <Eigen/Dense>
 #include <iostream>
+#include <cmath>
 
 using namespace pybind11;
 using namespace Eigen;
