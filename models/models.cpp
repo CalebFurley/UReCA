@@ -9,7 +9,7 @@ using namespace Eigen;
 using namespace std;
 
 /// <summary>
-/// Linear regression model. Used for classic regression problems.
+/// Linear Regression model, used for numerical machine learning tasks.
 /// </summary>
 class LinearRegression
 {
@@ -23,15 +23,13 @@ public:
 	~LinearRegression() { m_weights.setZero(); m_bias = 0.0; }
 
 	/// <summary>
-	/// This method is used to predict Y values on a data set. To use
-	/// correctly, this model must already be trained.
+	/// This method is used to train the model.
 	/// </summary>
-	/// <param name="data_X">is a numpy matrix of the features of your dataset.</param>
-	/// <param name="data_Y">is a numpy matrix of the outcomes of your dataset.</param>
-	/// <param name="learning_rate">is the learning rate or alpha for training.</param>
-	/// <param name="epochs">is the number of runs the model will train on the data.</param>
-	/// <returns>a numpy vector of predicted y values for all data samples.</returns>
-	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float learning_rate, int epochs)
+	/// <param name="data_X">: a numpy array of the features('X') of your dataset.</param>
+	/// <param name="data_Y">: a numpy array of the results('Y') of your dataset.</param>
+	/// <param name="alpha">: the learning rate for training the model.</param>
+	/// <param name="epochs">: the number times training loop will run.</param>
+	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float alpha, int epochs)
 	{	 
 		// Declare and init training variables.
 		double cost = 0.0;
@@ -64,18 +62,17 @@ public:
 			// Update weights and bias
 			for (int j = 0; j < m_weights.size(); j++)
 			{
-				m_weights(j) = m_weights(j) - learning_rate * dw(j);
+				m_weights(j) = m_weights(j) - alpha * dw(j);
 			}
-			m_bias = m_bias - learning_rate * db;
+			m_bias = m_bias - alpha * db;
 		}
 	}
 
 	/// <summary>
-	/// This method is used to predict outcomes or 'Y' values on a data set. To use
-	/// correctly, this model must already be trained.
+	/// This method is used to predict data. Train model first to use properly.
 	/// </summary>
-	/// <param name="data_X">is a numpy matrix of the features of your dataset.</param>
-	/// <returns>a numpy vector of predicted y values for all data samples.</returns>
+	/// <param name="data_X">: a numpy array of the features('X') of your dataset.</param>
+	/// <returns>np.array: a numpy array of predicted y values for all data samples.</returns>
 	MatrixXd predict(const MatrixXd& data_X)
 	{
 		// Multiply weights on all data then apply bias and return.
@@ -86,9 +83,9 @@ public:
 	/// <summary>
 	/// This method is used to score your model using the R^2 method.
 	/// </summary>
-	/// <param name="data_X">is the features, or 'X' values of your dataset.</param>
-	/// <param name="data_Y">is the real test results or 'Y' values of your dataset.</param>
-	/// <returns>a double which is your model's R^2 score.</returns>
+	/// <param name="data_X">: a numpy array of the features('X') of your dataset.</param>
+	/// <param name="data_Y">:  a numpy array of the results('Y') of your dataset.</param>
+	/// <returns>double: the R^2 score for the model.</returns>
 	double score(const MatrixXd& data_X, const MatrixXd& data_Y)
 	{
 		// Use model to get predictions.
@@ -109,7 +106,7 @@ public:
 };
 
 /// <summary>
-/// Logistic Regression model. Used for classification problems.
+/// Logistic Regression model, used for classification machine learning tasks.
 /// </summary>
 class LogisticRegression
 {
@@ -123,25 +120,22 @@ public:
 	~LogisticRegression() { m_weights.setZero(); m_bias = 0.0; }
 
 	/// <summary>
-	/// This method is used to predict Y values on a data set. To use
-	/// correctly, this model must already be trained.
+	/// This method is used to train the model.
 	/// </summary>
-	/// <param name="data_X">is a numpy matrix of the features of your dataset.</param>
-	/// <param name="data_Y">is a numpy matrix of the outcomes of your dataset.</param>
-	/// <param name="learning_rate">is the learning rate or alpha for training.</param>
-	/// <param name="epochs">is the number of runs the model will train on the data.</param>
-	/// <returns>a numpy vector of predicted y values for all data samples.</returns>
+	/// <param name="data_X">: a numpy array of the features('X') of your dataset.</param>
+	/// <param name="data_Y">: a numpy array of the results('Y') of your dataset.</param>
+	/// <param name="alpha">: the learning rate for training the model.</param>
+	/// <param name="epochs">: the number times training loop will run.</param>
 	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float learning_rate, int epochs)
 	{
 		//TODO write out the logistic regression model's training method here.
 	}
 
 	/// <summary>
-	/// This method is used to predict outcomes or 'Y' values on a data set. To use
-	/// correctly, this model must already be trained.
+	/// This method is used to predict data. Train model first to use properly.
 	/// </summary>
-	/// <param name="data_X">is a numpy matrix of the features of your dataset.</param>
-	/// <returns>a numpy vector of predicted y values for all data samples.</returns>
+	/// <param name="data_X">: a numpy array of the features('X') of your dataset.</param>
+	/// <returns>np.array: a numpy array of predicted y values for all data samples.</returns>
 	MatrixXd predict(const MatrixXd& data_X)
 	{
 		// Multiply weights on all data then apply bias and return.
@@ -152,9 +146,9 @@ public:
 	/// <summary>
 	/// This method is used to score your model using the R^2 method.
 	/// </summary>
-	/// <param name="data_X">is the features, or 'X' values of your dataset.</param>
-	/// <param name="data_Y">is the real test results or 'Y' values of your dataset.</param>
-	/// <returns>a double which is your model's R^2 score.</returns>
+	/// <param name="data_X">: a numpy array of the features('X') of your dataset.</param>
+	/// <param name="data_Y">:  a numpy array of the results('Y') of your dataset.</param>
+	/// <returns>double: the R^2 score for the model.</returns>
 	double score(const MatrixXd& data_X, const MatrixXd& data_Y)
 	{
 		// Use model to get predictions.
@@ -177,15 +171,61 @@ public:
 // Expose models to python module here.
 PYBIND11_MODULE(models, m)
 {
-	class_<LinearRegression>(m, "LinearRegression")
+	// Linear Regression Class.
+	class_<LinearRegression>(m, "LinearRegression", "Linear Regression model, used for numerical machine learning tasks.")
 		.def(init<>())
-		.def("train", &LinearRegression::train)
-		.def("predict", &LinearRegression::predict)
-		.def("score", &LinearRegression::score);
+		.def("train", &LinearRegression::train,
+			"Summary:\n"
+			"	This method is used to train the model.\n\n"
+			"Parameters:\n"
+			"	data_X: a numpy array of the features('X') of your dataset.\n"
+			"	data_Y: a numpy array of the results('Y') of your dataset.\n"
+			"	alpha:	the learning rate for training the model.\n"
+			"	epochs: the number times training loop will run.\n\n"
+			"Returns:\n"
+			"	void: this method returns nothing.")
+		.def("predict", &LinearRegression::predict,
+			"Summary:\n"
+			"	This method is used to predict data. Train model first to use properly.\n\n"
+			"Parameters:\n"
+			"	data_X: a numpy array of the features('X') of your dataset.\n\n"
+			"Returns:\n"
+			"	np.array: a numpy array of predicted y values for all data samples.")
+		.def("score", &LinearRegression::score,
+			"Summary:\n"
+			"	This method is used to score your model using the R^2 method.\n\n"
+			"Parameters:\n"
+			"	data_X: a numpy array of the features('X') of your dataset.\n"
+			"	data_Y: a numpy array of the results('Y') of your dataset.\n\n"
+			"Returns:\n"
+			"	double: the R^2 score for the model.");
 
-	class_<LogisticRegression>(m, "LogisticRegression")
+	// Logistic Regression Class.
+	class_<LogisticRegression>(m, "LogisticRegression", "Logistic Regression model, used for classification machine learning tasks.")
 		.def(init<>())
-		.def("train", &LogisticRegression::train)
-		.def("predict", &LogisticRegression::predict)
-		.def("score", &LogisticRegression::score);
+		.def("train", &LogisticRegression::train,
+			"Summary:\n"
+			"	This method is used to train the model.\n\n"
+			"Parameters:\n"
+			"	data_X: a numpy array of the features('X') of your dataset.\n"
+			"	data_Y: a numpy array of the results('Y') of your dataset.\n"
+			"	alpha:	the learning rate for training the model.\n"
+			"	epochs: the number times training loop will run.\n\n"
+			"Returns:\n"
+			"	void: this method returns nothing.")
+		.def("predict", &LogisticRegression::predict,
+			"Summary:\n"
+			"	This method is used to predict data. Train model first to use properly.\n\n"
+			"Parameters:\n"
+			"	data_X: a numpy array of the features('X') of your dataset.\n\n"
+			"Returns:\n"
+			"	np.array: a numpy array of predicted y values for all data samples.")
+		.def("score", &LogisticRegression::score,
+			"Summary:\n"
+			"	This method is used to score your model using the R^2 method.\n\n"
+			"Parameters:\n"
+			"	data_X: a numpy array of the features('X') of your dataset.\n"
+			"	data_Y: a numpy array of the results('Y') of your dataset.\n\n"
+			"Returns:\n"
+			"	double: the R^2 score for the model.");
 }
