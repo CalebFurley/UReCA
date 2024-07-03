@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
 from models import LinearRegression
+from models import LogisticRegression
 
 ### IMPORT-DATA ###
 print("Importing Data.")
@@ -23,7 +24,7 @@ scaler = StandardScaler()
 train_x = scaler.fit_transform(train_x)
 test_x = scaler.transform(test_x) 
 # Newlines to console
-print("About to train.\n\n\n")
+print("About to train...\n\n")
 
 ##########################################################################
 ### MODEL-TESTING ###
@@ -35,4 +36,12 @@ model = LinearRegression()
 model.train(train_x, train_y, 0.01, 500)
 model.predict(test_x)
 score = model.score(test_x, test_y)
-print("R^2 Score = ", score)
+print("R^2 Score = ", score, "\n\n")
+
+#Logistic-Regression
+print("Training Logistic Regression Model.")
+model = LogisticRegression()
+model.train(train_x, train_y, 0.01, 500)
+model.predict(test_x)
+score = model.score(test_x, test_y)
+print("R^2 Score = ", score, "\n\n")

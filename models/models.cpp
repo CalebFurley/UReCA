@@ -2,31 +2,35 @@
 #include <pybind11/numpy.h>
 #include <pybind11/eigen.h>
 #include <Eigen/Dense>
-
 #include <iostream>
-#include <vector>
-#include <math.h>
 
-namespace py = pybind11;
+using namespace pybind11;
 using namespace Eigen;
 using namespace std;
 
-
-/////////////////////////////
-// Linear Regression Class
+/// <summary>
+/// Linear regression model. Used for classic regression problems.
+/// </summary>
 class LinearRegression
 {
 private:
-	// Training Members
+	//training-members
 	Vector<double, Dynamic> m_weights;
 	double m_bias;
 
 public:
-	// Constructor and Destructor
-	LinearRegression() {}
+	LinearRegression() { m_weights.setZero(), m_bias = 0.0; }
 	~LinearRegression() { m_weights.setZero(); m_bias = 0.0; }
 
-	// Training method
+	/// <summary>
+	/// This method is used to predict Y values on a data set. To use
+	/// correctly, this model must already be trained.
+	/// </summary>
+	/// <param name="data_X">is a numpy matrix of the features of your dataset.</param>
+	/// <param name="data_Y">is a numpy matrix of the outcomes of your dataset.</param>
+	/// <param name="learning_rate">is the learning rate or alpha for training.</param>
+	/// <param name="epochs">is the number of runs the model will train on the data.</param>
+	/// <returns>a numpy vector of predicted y values for all data samples.</returns>
 	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float learning_rate, int epochs)
 	{	 
 		// Declare and init training variables.
@@ -66,8 +70,12 @@ public:
 		}
 	}
 
-
-	// Predict method
+	/// <summary>
+	/// This method is used to predict outcomes or 'Y' values on a data set. To use
+	/// correctly, this model must already be trained.
+	/// </summary>
+	/// <param name="data_X">is a numpy matrix of the features of your dataset.</param>
+	/// <returns>a numpy vector of predicted y values for all data samples.</returns>
 	MatrixXd predict(const MatrixXd& data_X)
 	{
 		// Multiply weights on all data then apply bias and return.
@@ -75,9 +83,12 @@ public:
 		return predictions;
 	}
 
-
-
-	// Score method
+	/// <summary>
+	/// This method is used to score your model using the R^2 method.
+	/// </summary>
+	/// <param name="data_X">is the features, or 'X' values of your dataset.</param>
+	/// <param name="data_Y">is the real test results or 'Y' values of your dataset.</param>
+	/// <returns>a double which is your model's R^2 score.</returns>
 	double score(const MatrixXd& data_X, const MatrixXd& data_Y)
 	{
 		// Use model to get predictions.
@@ -95,20 +106,86 @@ public:
 		// Return the R^2 score.
 		return r2_score;
 	}
+};
 
-};//lin-reg
+/// <summary>
+/// Logistic Regression model. Used for classification problems.
+/// </summary>
+class LogisticRegression
+{
+private:
+	//training-members
+	VectorXd m_weights;
+	double m_bias;
 
+public:
+	LogisticRegression() { m_weights.setZero(), m_bias = 0.0; }
+	~LogisticRegression() { m_weights.setZero(); m_bias = 0.0; }
 
-///////////////////////////////
-// Pybind11 Expose Modules
+	/// <summary>
+	/// This method is used to predict Y values on a data set. To use
+	/// correctly, this model must already be trained.
+	/// </summary>
+	/// <param name="data_X">is a numpy matrix of the features of your dataset.</param>
+	/// <param name="data_Y">is a numpy matrix of the outcomes of your dataset.</param>
+	/// <param name="learning_rate">is the learning rate or alpha for training.</param>
+	/// <param name="epochs">is the number of runs the model will train on the data.</param>
+	/// <returns>a numpy vector of predicted y values for all data samples.</returns>
+	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float learning_rate, int epochs)
+	{
+		//todo
+	}
+
+	/// <summary>
+	/// This method is used to predict outcomes or 'Y' values on a data set. To use
+	/// correctly, this model must already be trained.
+	/// </summary>
+	/// <param name="data_X">is a numpy matrix of the features of your dataset.</param>
+	/// <returns>a numpy vector of predicted y values for all data samples.</returns>
+	MatrixXd predict(const MatrixXd& data_X)
+	{
+		// Multiply weights on all data then apply bias and return.
+		MatrixXd predictions = (data_X * m_weights).array() + m_bias;
+		return predictions;
+	}
+
+	/// <summary>
+	/// This method is used to score your model using the R^2 method.
+	/// </summary>
+	/// <param name="data_X">is the features, or 'X' values of your dataset.</param>
+	/// <param name="data_Y">is the real test results or 'Y' values of your dataset.</param>
+	/// <returns>a double which is your model's R^2 score.</returns>
+	double score(const MatrixXd& data_X, const MatrixXd& data_Y)
+	{
+		// Use model to get predictions.
+		MatrixXd predictions = predict(data_X);
+
+		// Calculate the total sum of squares.
+		double total_variance = (data_Y.array() - data_Y.mean()).square().sum();
+
+		// Calculate the residual sum of squares.
+		double residual_variance = (data_Y.array() - predictions.array()).square().sum();
+
+		// Calculate R^2 score.
+		double r2_score = 1 - (residual_variance / total_variance);
+
+		// Return the R^2 score.
+		return r2_score;
+	}
+};
+
+// Expose models to python module here.
 PYBIND11_MODULE(models, m)
 {
-	// Linear Regression
-	py::class_<LinearRegression>(m, "LinearRegression")
-		.def(py::init<>())
+	class_<LinearRegression>(m, "LinearRegression")
+		.def(init<>())
 		.def("train", &LinearRegression::train)
 		.def("predict", &LinearRegression::predict)
 		.def("score", &LinearRegression::score);
 
-	//TODO Logistic Regression
+	class_<LogisticRegression>(m, "LogisticRegression")
+		.def(init<>())
+		.def("train", &LogisticRegression::train)
+		.def("predict", &LogisticRegression::predict)
+		.def("score", &LogisticRegression::score);
 }
