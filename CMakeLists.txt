@@ -1,11 +1,11 @@
-﻿# GLOBAL URECA SOLUTION CONFIGURATION
+﻿## GLOBAL CMake for ureca project.
 #
 
 # Set the minimum version of CMake required to build the project.
 cmake_minimum_required (VERSION 3.8)
 
 # !!! Important !!! Set the toolchain file to the vcpkg.cmake file in your vcpkg directory.
-set(CMAKE_TOOLCHAIN_FILE "C:/Users/caleb/VCPKG/vcpkg/scripts/buildsystems/vcpkg.cmake")
+set(CMAKE_TOOLCHAIN_FILE "C:/Development/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 
 # Enable Hot Reload for MSVC compilers if supported.
