@@ -10,8 +10,8 @@ scaler = StandardScaler()                                # <------------------- 
 
 # Import Data Sets
 print("Importing Data.")
-housing_df = pd.read_csv('C:/Users/caleb/Code/Trabajo/UReCA/python-testing/datasets/housing-data.csv')
-diabetes_df = pd.read_csv('C:/Users/caleb/Code/Trabajo/UReCA/python-testing/datasets/diabetes-data.csv')
+housing_df = pd.read_csv('C:/Development/source/CalebFurley/UReCA/python-testing/datasets/housing-data.csv')
+diabetes_df = pd.read_csv('C:/Development/source/CalebFurley/UReCA/python-testing/datasets/diabetes-data.csv')
 
 # Preprocess Housing Data
 print("Preprocessing Housing Data.")
