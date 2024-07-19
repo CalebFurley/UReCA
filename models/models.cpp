@@ -127,9 +127,42 @@ public:
 	/// <param name="data_Y">: a numpy array of the results('Y') of your dataset.</param>
 	/// <param name="alpha">: the learning rate for training the model.</param>
 	/// <param name="epochs">: the number times training loop will run.</param>
-	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float learning_rate, int epochs)
+	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float alpha, int epochs)
 	{
-		//TODO write out the logistic regression model's training method here.
+		// Declare and init training variables.
+		double cost = 0.0;
+		Index feat_count = data_X.cols();
+		Index sample_count = data_X.rows();
+		Vector<double, Dynamic> fwb; fwb.setZero();
+		Vector<double, Dynamic> dw; dw.setZero();
+		double db = 0.0;
+
+		// Set weights and bias to zero.
+		m_weights.resize(feat_count);
+		m_weights.setZero();
+		m_bias = 0.0;
+
+		// Perform Gradiant Descent
+		for (int epoch = 0; epoch < epochs; ++epoch)
+		{
+			// Calculate linear function across all samples.
+			fwb = (data_X * m_weights).array() + m_bias;
+			VectorXd sigmoid = 1.0 / (1.0 + (-fwb).array().exp());
+
+			// Calculate cost with current function.
+			cost = -(data_Y.array() * fwb.array().log() + (1 - data_Y.array()) * (1 - fwb.array()).log()).mean();
+
+			// Calculate gradient for current function.
+			dw = (1.0 / sample_count) * (data_X.transpose() * (sigmoid - data_Y));
+			db = (1.0 / sample_count) * (sigmoid - data_Y).sum();
+
+			// Update weights and bias
+			for (int j = 0; j < m_weights.size(); j++)
+			{
+				m_weights(j) = m_weights(j) - alpha * dw(j);
+			}
+			m_bias = m_bias - alpha * db;
+		}
 	}
 
 	/// <summary>
@@ -139,8 +172,10 @@ public:
 	/// <returns>np.array: a numpy array of predicted y values for all data samples.</returns>
 	MatrixXd predict(const MatrixXd& data_X)
 	{
-		// Multiply weights on all data then apply bias and return.
-		MatrixXd predictions = (data_X * m_weights).array() + m_bias;
+		// Multiply weights on all data then apply bias.
+		MatrixXd linear_combination = (data_X * m_weights).array() + m_bias;
+		// Apply the sigmoid function to each element to get probabilities.
+		MatrixXd predictions = 1.0 / (1.0 + (-linear_combination).array().exp());
 		return predictions;
 	}
 
@@ -152,20 +187,15 @@ public:
 	/// <returns>double: the R^2 score for the model.</returns>
 	double score(const MatrixXd& data_X, const MatrixXd& data_Y)
 	{
-		// Use model to get predictions.
 		MatrixXd predictions = predict(data_X);
+		// Threshold predictions to get binary outcomes.
+		predictions = (predictions.array() >= 0.5).cast<double>();
 
-		// Calculate the total sum of squares.
-		double total_variance = (data_Y.array() - data_Y.mean()).square().sum();
+		// Calculate accuracy.
+		double correct_predictions = (predictions.array() == data_Y.array()).cast<double>().sum();
+		double accuracy = correct_predictions / data_Y.rows();
 
-		// Calculate the residual sum of squares.
-		double residual_variance = (data_Y.array() - predictions.array()).square().sum();
-
-		// Calculate R^2 score.
-		double r2_score = 1 - (residual_variance / total_variance);
-
-		// Return the R^2 score.
-		return r2_score;
+		return accuracy;
 	}
 };
 
