@@ -112,7 +112,6 @@ public:
 class LogisticRegression
 {
 private:
-	//training-members
 	VectorXd m_weights;
 	double m_bias;
 
@@ -129,7 +128,7 @@ public:
 	/// <param name="epochs">: the number times training loop will run.</param>
 	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float alpha, int epochs)
 	{
-		// Declare and init training variables.
+		// Local training variables.
 		double cost = 0.0;
 		Index feat_count = data_X.cols();
 		Index sample_count = data_X.rows();
@@ -142,7 +141,7 @@ public:
 		m_weights.setZero();
 		m_bias = 0.0;
 
-		// Perform Gradiant Descent
+		// Perform gradient descent.
 		for (int epoch = 0; epoch < epochs; ++epoch)
 		{
 			// Calculate linear function across all samples.
@@ -199,7 +198,19 @@ public:
 	}
 };
 
-// Expose models to python module here.
+
+// KNN goes here..				Due: Monday, July 22.			<- three days on this guys, so get to it! 
+
+// Decision Tree goes here..	Due: Monday, July 29.
+
+// Random Forest goes here..	Due: Monday, August 5.
+
+// Naive Bayes goes here..		Due: Monday, August 12.
+
+// Write the final report..		Due: Monday, August 26.
+
+/* Expose models to python module here.
+*/
 PYBIND11_MODULE(models, m)
 {
 	// Linear Regression Class.
