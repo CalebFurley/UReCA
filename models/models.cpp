@@ -198,7 +198,6 @@ public:
 	}
 };
 
-
 // KNN goes here..				Due: Monday, July 22.			<- three days on this guys, so get to it! 
 
 // Decision Tree goes here..	Due: Monday, July 29.
