@@ -198,15 +198,24 @@ public:
 	}
 };
 
-// KNN goes here..				Due: Monday, July 22.			<- three days on this guys, so get to it! 
+// KNN goes here..				Due: Monday, July 26.			<- three days on this, so get to it!
+class KNearestNeighbors
+{
+private:
+	//member-vars-here.
+public:
+	void train();
+	void predict();
+	void score();
+};
 
-// Decision Tree goes here..	Due: Monday, July 29.
+// Decision Tree goes here..	Due: Monday, August 2.
 
-// Random Forest goes here..	Due: Monday, August 5.
+// Random Forest goes here..	Due: Monday, August 9.
 
-// Naive Bayes goes here..		Due: Monday, August 12.
+// Naive Bayes goes here..		Due: Monday, August 15.
 
-// Write the final report..		Due: Monday, August 26.
+// Write the final report..		Due: Monday, August 30.
 
 /* Expose models to python module here.
 */
