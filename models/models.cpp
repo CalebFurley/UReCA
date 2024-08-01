@@ -15,11 +15,12 @@ using namespace std;
 class LinearRegression
 {
 private:
-	//training-members
+	//cf Weights and bias training members.
 	Vector<double, Dynamic> m_weights;
 	double m_bias;
 
 public:
+	//cf Constructor and destructor.
 	LinearRegression() { m_weights.setZero(), m_bias = 0.0; }
 	~LinearRegression() { m_weights.setZero(); m_bias = 0.0; }
 
@@ -32,7 +33,7 @@ public:
 	/// <param name="epochs">: the number times training loop will run.</param>
 	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float alpha, int epochs)
 	{	 
-		// Declare and init training variables.
+		//cf Declare and init training variables.
 		double cost = 0.0;
 		Index feat_count = data_X.cols();
 		Index sample_count = data_X.rows();
@@ -40,27 +41,27 @@ public:
 		Vector<double, Dynamic> dw; dw.setZero();
 		double db = 0.0;
 
-		// Set weights and bias to zero.
+		//cf Set weights and bias to zero.
 		m_weights.resize(feat_count);
 		m_weights.setZero();
 		m_bias = 0.0;
 		
-		// Perform Gradiant Descent
+		//cf Perform Gradiant Descent
 		for (int epoch = 0; epoch < epochs; ++epoch)
 		{	
-			// Calculate linear function across all samples.
+			//cf Calculate linear function across all samples.
 			fwb = (data_X * m_weights);
 			fwb = fwb.array() + m_bias;
 
-			// Calculate cost with current function.
+			//cf Calculate cost with current function.
 			cost = (fwb - data_Y).squaredNorm();
 			cost /= 2 * sample_count;
 
-			// Calculate gradient for current function.
+			//cf Calculate gradient for current function.
 			dw = (1.0 / (double)sample_count) * (data_X.transpose() * (fwb - data_Y));
 			db = ((1.0 / (double)feat_count) * (fwb - data_Y)).sum();
 
-			// Update weights and bias
+			//cf Update weights and bias
 			for (int j = 0; j < m_weights.size(); j++)
 			{
 				m_weights(j) = m_weights(j) - alpha * dw(j);
@@ -76,7 +77,7 @@ public:
 	/// <returns>np.array: a numpy array of predicted y values for all data samples.</returns>
 	MatrixXd predict(const MatrixXd& data_X)
 	{
-		// Multiply weights on all data then apply bias and return.
+		//cf Multiply weights on all data then apply bias and return.
 		MatrixXd predictions = (data_X * m_weights).array() + m_bias;
 		return predictions;
 	}
@@ -89,19 +90,17 @@ public:
 	/// <returns>double: the R^2 score for the model.</returns>
 	double score(const MatrixXd& data_X, const MatrixXd& data_Y)
 	{
-		// Use model to get predictions.
+		//cf Use model to get predictions.
 		MatrixXd predictions = predict(data_X);
 
-		// Calculate the total sum of squares.
+		//cf Calculate the total & residual sum of squares.
 		double total_variance = (data_Y.array() - data_Y.mean()).square().sum();
-
-		// Calculate the residual sum of squares.
 		double residual_variance = (data_Y.array() - predictions.array()).square().sum();
 
-		// Calculate R^2 score.
+		//cf Calculate R^2 score.
 		double r2_score = 1 - (residual_variance / total_variance);
 
-		// Return the R^2 score.
+		//cf Return the R^2 score.
 		return r2_score;
 	}
 };
@@ -112,10 +111,12 @@ public:
 class LogisticRegression
 {
 private:
+	//cf Weights and bias training members.
 	VectorXd m_weights;
 	double m_bias;
 
 public:
+	//cf Constructor and destructor.
 	LogisticRegression() { m_weights.setZero(), m_bias = 0.0; }
 	~LogisticRegression() { m_weights.setZero(); m_bias = 0.0; }
 
@@ -128,7 +129,7 @@ public:
 	/// <param name="epochs">: the number times training loop will run.</param>
 	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float alpha, int epochs)
 	{
-		// Local training variables.
+		//cf Local training variables.
 		double cost = 0.0;
 		Index feat_count = data_X.cols();
 		Index sample_count = data_X.rows();
@@ -136,26 +137,26 @@ public:
 		Vector<double, Dynamic> dw; dw.setZero();
 		double db = 0.0;
 
-		// Set weights and bias to zero.
+		//cf Set weights and bias to zero.
 		m_weights.resize(feat_count);
 		m_weights.setZero();
 		m_bias = 0.0;
 
-		// Perform gradient descent.
+		//cf Perform gradient descent.
 		for (int epoch = 0; epoch < epochs; ++epoch)
 		{
-			// Calculate linear function across all samples.
+			//cf Calculate linear function across all samples.
 			fwb = (data_X * m_weights).array() + m_bias;
 			VectorXd sigmoid = 1.0 / (1.0 + (-fwb).array().exp());
 
-			// Calculate cost with current function.
+			//cf Calculate cost with current function.
 			cost = -(data_Y.array() * fwb.array().log() + (1 - data_Y.array()) * (1 - fwb.array()).log()).mean();
 
-			// Calculate gradient for current function.
+			//cf Calculate gradient for current function.
 			dw = (1.0 / sample_count) * (data_X.transpose() * (sigmoid - data_Y));
 			db = (1.0 / sample_count) * (sigmoid - data_Y).sum();
 
-			// Update weights and bias
+			//cf Update weights and bias
 			for (int j = 0; j < m_weights.size(); j++)
 			{
 				m_weights(j) = m_weights(j) - alpha * dw(j);
@@ -171,9 +172,9 @@ public:
 	/// <returns>np.array: a numpy array of predicted y values for all data samples.</returns>
 	MatrixXd predict(const MatrixXd& data_X)
 	{
-		// Multiply weights on all data then apply bias.
+		//cf Multiply weights on all data then apply bias.
 		MatrixXd linear_combination = (data_X * m_weights).array() + m_bias;
-		// Apply the sigmoid function to each element to get probabilities.
+		//cf Apply the sigmoid function to each element to get probabilities.
 		MatrixXd predictions = 1.0 / (1.0 + (-linear_combination).array().exp());
 		return predictions;
 	}
@@ -187,10 +188,10 @@ public:
 	double score(const MatrixXd& data_X, const MatrixXd& data_Y)
 	{
 		MatrixXd predictions = predict(data_X);
-		// Threshold predictions to get binary outcomes.
+		//cf Threshold predictions to get binary outcomes.
 		predictions = (predictions.array() >= 0.5).cast<double>();
 
-		// Calculate accuracy.
+		//cf Calculate accuracy.
 		double correct_predictions = (predictions.array() == data_Y.array()).cast<double>().sum();
 		double accuracy = correct_predictions / data_Y.rows();
 
@@ -202,11 +203,21 @@ public:
 class KNearestNeighbors
 {
 private:
-	//member-vars-here.
+	//cf Member variables go here.
+
+	//cf Used to calculate distance between two points.
+	float single_euclidean_distance(float x1, float x2)
+	{
+		float distance = sqrt( ((x1 - x2) * (x1 - x2)) );
+		return distance;
+	}
+
 public:
 	void train();
 	void predict();
 	void score();
+
+
 };
 
 // Decision Tree goes here..	Due: Friday, August 9.
