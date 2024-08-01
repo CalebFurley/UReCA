@@ -203,19 +203,64 @@ public:
 class KNearestNeighbors
 {
 private:
-	//cf Member variables go here.
+	//cf Member Variables for data, note no weights or bias for knn.
+	MatrixXd m_data_X;
+	VectorXd m_data_Y;
+	int m_k; //cf number of neighbors.
 
 	//cf Used to calculate distance between two points.
-	float single_euclidean_distance(float x1, float x2)
+	double euclidean_distance(const VectorXd& x1, const VectorXd& x2)
 	{
-		float distance = sqrt( ((x1 - x2) * (x1 - x2)) );
-		return distance;
+		return sqrt( (x1 - x2).array().square().sum());
 	}
 
 public:
-	void train();
-	void predict();
-	void score();
+	//cf Constructor and destructor.
+	KNearestNeighbors(int k) : m_k(k) {}
+	~KNearestNeighbors() {}
+
+
+	void train(const MatrixXd& data_X, const MatrixXd& data_Y)
+	{
+		m_data_X = data_X;
+		m_data_Y = data_Y;
+	}
+	MatrixXd predict(const MatrixXd& data_X)
+	{
+		VectorXd distances(data_X.rows());
+
+		for (int i = 0; i < m_data_X.size(); ++i)
+		{
+			//cf Set distances to zero
+			VectorXd distances = VectorXd::Zero(m_data_X.rows());
+
+			//cf Compute the distance between the feature being guessed(i) and all data samples(j)
+			for (int j = 0; j < m_data_X.rows(); ++j)
+			{
+				distances(j) = euclidean_distance(data_X.row(i), m_data_X.row(j));
+			}
+
+			//cf Sort the distances and get indeces of closes points to guess.
+			vector<int> indices(distances.size());
+			iota(indices.begin(), indices.end(), 0); // fill array with 0,1,2,N
+			sort(indices.begin(), indices.end(), [&distances](int a, int b)
+			{
+				return distances(a) < distances(b);
+			});
+
+			//cf Get the closest k (argsort)
+
+
+
+			//cf Majority vote
+		}
+
+
+	}
+	double score()
+	{
+		return 0.0; //stubby
+	}
 
 
 };
