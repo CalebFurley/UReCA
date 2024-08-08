@@ -5,10 +5,6 @@
 #include <iostream>
 #include <cmath>
 
-using namespace pybind11;
-using namespace Eigen;
-using namespace std;
-
 /// <summary>
 /// Linear Regression model, used for numerical machine learning tasks.
 /// </summary>
@@ -16,7 +12,7 @@ class LinearRegression
 {
 private:
 	//cf Weights and bias training members.
-	Vector<double, Dynamic> m_weights;
+	Eigen::Vector<double, Eigen::Dynamic> m_weights;
 	double m_bias;
 
 public:
@@ -31,14 +27,14 @@ public:
 	/// <param name="data_Y">: a numpy array of the results('Y') of your dataset.</param>
 	/// <param name="alpha">: the learning rate for training the model.</param>
 	/// <param name="epochs">: the number times training loop will run.</param>
-	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float alpha, int epochs)
+	void train(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y, float alpha, int epochs)
 	{	 
 		//cf Declare and init training variables.
 		double cost = 0.0;
-		Index feat_count = data_X.cols();
-		Index sample_count = data_X.rows();
-		Vector<double, Dynamic> fwb; fwb.setZero();
-		Vector<double, Dynamic> dw; dw.setZero();
+		Eigen::Index feat_count = data_X.cols();
+		Eigen::Index sample_count = data_X.rows();
+		Eigen::Vector<double, Eigen::Dynamic> fwb; fwb.setZero();
+		Eigen::Vector<double, Eigen::Dynamic> dw; dw.setZero();
 		double db = 0.0;
 
 		//cf Set weights and bias to zero.
@@ -75,10 +71,10 @@ public:
 	/// </summary>
 	/// <param name="data_X">: a numpy array of the features('X') of your dataset.</param>
 	/// <returns>np.array: a numpy array of predicted y values for all data samples.</returns>
-	MatrixXd predict(const MatrixXd& data_X)
+	Eigen::MatrixXd predict(const Eigen::MatrixXd& data_X)
 	{
 		//cf Multiply weights on all data then apply bias and return.
-		MatrixXd predictions = (data_X * m_weights).array() + m_bias;
+		Eigen::MatrixXd predictions = (data_X * m_weights).array() + m_bias;
 		return predictions;
 	}
 
@@ -88,10 +84,10 @@ public:
 	/// <param name="data_X">: a numpy array of the features('X') of your dataset.</param>
 	/// <param name="data_Y">:  a numpy array of the results('Y') of your dataset.</param>
 	/// <returns>double: the R^2 score for the model.</returns>
-	double score(const MatrixXd& data_X, const MatrixXd& data_Y)
+	double score(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y)
 	{
 		//cf Use model to get predictions.
-		MatrixXd predictions = predict(data_X);
+		Eigen::MatrixXd predictions = predict(data_X);
 
 		//cf Calculate the total & residual sum of squares.
 		double total_variance = (data_Y.array() - data_Y.mean()).square().sum();
@@ -112,7 +108,7 @@ class LogisticRegression
 {
 private:
 	//cf Weights and bias training members.
-	VectorXd m_weights;
+	Eigen::VectorXd m_weights;
 	double m_bias;
 
 public:
@@ -127,14 +123,14 @@ public:
 	/// <param name="data_Y">: a numpy array of the results('Y') of your dataset.</param>
 	/// <param name="alpha">: the learning rate for training the model.</param>
 	/// <param name="epochs">: the number times training loop will run.</param>
-	void train(const MatrixXd& data_X, const MatrixXd& data_Y, float alpha, int epochs)
+	void train(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y, float alpha, int epochs)
 	{
 		//cf Local training variables.
 		double cost = 0.0;
-		Index feat_count = data_X.cols();
-		Index sample_count = data_X.rows();
-		Vector<double, Dynamic> fwb; fwb.setZero();
-		Vector<double, Dynamic> dw; dw.setZero();
+		Eigen::Index feat_count = data_X.cols();
+		Eigen::Index sample_count = data_X.rows();
+		Eigen::Vector<double, Eigen::Dynamic> fwb; fwb.setZero();
+		Eigen::Vector<double, Eigen::Dynamic> dw; dw.setZero();
 		double db = 0.0;
 
 		//cf Set weights and bias to zero.
@@ -147,7 +143,7 @@ public:
 		{
 			//cf Calculate linear function across all samples.
 			fwb = (data_X * m_weights).array() + m_bias;
-			VectorXd sigmoid = 1.0 / (1.0 + (-fwb).array().exp());
+			Eigen::VectorXd sigmoid = 1.0 / (1.0 + (-fwb).array().exp());
 
 			//cf Calculate cost with current function.
 			cost = -(data_Y.array() * fwb.array().log() + (1 - data_Y.array()) * (1 - fwb.array()).log()).mean();
@@ -170,12 +166,12 @@ public:
 	/// </summary>
 	/// <param name="data_X">: a numpy array of the features('X') of your dataset.</param>
 	/// <returns>np.array: a numpy array of predicted y values for all data samples.</returns>
-	MatrixXd predict(const MatrixXd& data_X)
+	Eigen::MatrixXd predict(const Eigen::MatrixXd& data_X)
 	{
 		//cf Multiply weights on all data then apply bias.
-		MatrixXd linear_combination = (data_X * m_weights).array() + m_bias;
+		Eigen::MatrixXd linear_combination = (data_X * m_weights).array() + m_bias;
 		//cf Apply the sigmoid function to each element to get probabilities.
-		MatrixXd predictions = 1.0 / (1.0 + (-linear_combination).array().exp());
+		Eigen::MatrixXd predictions = 1.0 / (1.0 + (-linear_combination).array().exp());
 		return predictions;
 	}
 
@@ -185,9 +181,9 @@ public:
 	/// <param name="data_X">: a numpy array of the features('X') of your dataset.</param>
 	/// <param name="data_Y">:  a numpy array of the results('Y') of your dataset.</param>
 	/// <returns>double: the R^2 score for the model.</returns>
-	double score(const MatrixXd& data_X, const MatrixXd& data_Y)
+	double score(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y)
 	{
-		MatrixXd predictions = predict(data_X);
+		Eigen::MatrixXd predictions = predict(data_X);
 		//cf Threshold predictions to get binary outcomes.
 		predictions = (predictions.array() >= 0.5).cast<double>();
 
@@ -199,75 +195,111 @@ public:
 	}
 };
 
-// KNN goes here..				Due: Monday, August 2.
+// KNN goes here..				Due: Monday, August 6.
 class KNearestNeighbors
 {
 private:
 	//cf Member Variables for data, note no weights or bias for knn.
-	MatrixXd m_data_X;
-	VectorXd m_data_Y;
-	int m_k; //cf number of neighbors.
+	Eigen::MatrixXd m_data_X;
+	Eigen::VectorXd m_data_Y;
+	int m_k = 0; //cf number of neighbors.
+	int m_number_of_classes = 0;
 
 	//cf Used to calculate distance between two points.
-	double euclidean_distance(const VectorXd& x1, const VectorXd& x2)
+	double euclidean_distance(const Eigen::VectorXd& x1, const Eigen::VectorXd& x2)
 	{
 		return sqrt( (x1 - x2).array().square().sum());
 	}
 
 public:
 	//cf Constructor and destructor.
-	KNearestNeighbors(int k) : m_k(k) {}
+	KNearestNeighbors(int k, int number_of_classes) : m_k(k), m_number_of_classes(number_of_classes) {}
 	~KNearestNeighbors() {}
 
-
-	void train(const MatrixXd& data_X, const MatrixXd& data_Y)
+	void train(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y)
 	{
 		m_data_X = data_X;
 		m_data_Y = data_Y;
 	}
-	MatrixXd predict(const MatrixXd& data_X)
+
+	Eigen::MatrixXd predict(const Eigen::MatrixXd& data_X)
 	{
-		VectorXd distances(data_X.rows());
+		// Stores all predictions.
+		Eigen::MatrixXd predictions(data_X.rows(), 1);
 
-		for (int i = 0; i < m_data_X.size(); ++i)
+		// For all inputs, run through full KNN algorithm.
+		for (int i = 0; i < data_X.rows(); ++i)
 		{
-			//cf Set distances to zero
-			VectorXd distances = VectorXd::Zero(m_data_X.rows());
+			// Vector pair for index and calculated distance(cost)
+			std::vector<std::pair<double, int>> distances;
 
-			//cf Compute the distance between the feature being guessed(i) and all data samples(j)
+			// Compute distance between input(i) and points(j)
 			for (int j = 0; j < m_data_X.rows(); ++j)
 			{
-				distances(j) = euclidean_distance(data_X.row(i), m_data_X.row(j));
+				double dist = euclidean_distance(data_X.row(i), m_data_X.row(j));
+				distances.push_back(std::make_pair(dist, j));
 			}
 
-			//cf Sort the distances and get indeces of closes points to guess.
-			vector<int> indices(distances.size());
-			iota(indices.begin(), indices.end(), 0); // fill array with 0,1,2,N
-			sort(indices.begin(), indices.end(), [&distances](int a, int b)
+			// Sort the distances.
+			std::sort(distances.begin(), distances.end());
+
+			// Get the closest k neighbors.
+			std::vector<int> neighbors;
+			for (int k = 0; k < m_k; ++k)
 			{
-				return distances(a) < distances(b);
-			});
+				neighbors.push_back(m_data_Y(distances[k].second));
+			}
 
-			//cf Get the closest k (argsort)
+			// Create vector to store counts for voting.
+			std::vector<int> class_count(m_number_of_classes, 0);
+			for (int k = 0; k < neighbors.size(); ++k)
+			{
+				class_count[static_cast<int>(neighbors[k])]++;
+			}
 
+			// Majority Vote for prediction.
+			int predicted_class = -1;
+			int max_count = -1;
+			for (int c = 0; c < class_count.size(); ++c)
+			{
+				if (class_count[c] > max_count)
+				{
+					max_count = class_count[c];
+					predicted_class = c;
+				}
+			}
 
-
-			//cf Majority vote
+			// Set predictions[i] with the prediction for that point.
+			predictions(i, 0) = predicted_class;
 		}
 
-
+		return predictions;
 	}
-	double score()
+
+	double score(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y)
 	{
-		return 0.0; //stubby
+		// Predict the labels for the input data
+		Eigen::MatrixXd predictions = predict(data_X);
+
+		// Count the number of correct predictions
+		int correct_predictions = 0;
+		for (int i = 0; i < data_Y.rows(); ++i)
+		{
+			if (predictions(i, 0) == data_Y(i, 0))
+			{
+				correct_predictions++;
+			}
+		}
+
+		// Calculate accuracy
+		double accuracy = static_cast<double>(correct_predictions) / data_Y.rows();
+		return accuracy;
 	}
-
-
 };
 
 // Decision Tree goes here..	Due: Friday, August 9.
 
-// Random Forest goes here..	Due: Friday, August 9.
+// Random Forest goes here..	Due: Friday, August 12.
 
 // Naive Bayes goes here..		Due: Friday, August 16.
 
@@ -278,8 +310,8 @@ public:
 PYBIND11_MODULE(models, m)
 {
 	// Linear Regression Class.
-	class_<LinearRegression>(m, "LinearRegression", "Linear Regression model, used for numerical machine learning tasks.")
-		.def(init<>())
+	pybind11::class_<LinearRegression>(m, "LinearRegression", "Linear Regression model, used for numerical machine learning tasks.")
+		.def(pybind11::init<>())
 		.def("train", &LinearRegression::train,
 			"Summary:\n"
 			"	This method is used to train the model.\n\n"
@@ -307,8 +339,8 @@ PYBIND11_MODULE(models, m)
 			"	double: the R^2 score for the model.");
 
 	// Logistic Regression Class.
-	class_<LogisticRegression>(m, "LogisticRegression", "Logistic Regression model, used for classification machine learning tasks.")
-		.def(init<>())
+	pybind11::class_<LogisticRegression>(m, "LogisticRegression", "Logistic Regression model, used for classification machine learning tasks.")
+		.def(pybind11::init<>())
 		.def("train", &LogisticRegression::train,
 			"Summary:\n"
 			"	This method is used to train the model.\n\n"
@@ -334,4 +366,17 @@ PYBIND11_MODULE(models, m)
 			"	data_Y: a numpy array of the results('Y') of your dataset.\n\n"
 			"Returns:\n"
 			"	double: the R^2 score for the model.");
+
+	// K Nearest Neighbors Class.
+	pybind11::class_<KNearestNeighbors>(m, "KNearestNeighbors", "K Nearest Model, used for classification machine learning tasks.")
+		.def(pybind11::init<>())
+		.def("train", &KNearestNeighbors::train,
+			"stubby."
+		)
+		.def("predict", &KNearestNeighbors::predict,
+			"stubby."
+		)
+		.def("score", &KNearestNeighbors::score,
+			"stubby."
+		);
 }
