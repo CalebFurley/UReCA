@@ -297,11 +297,35 @@ public:
 	}
 };
 
-// Decision Tree goes here..	Due: Friday, August 9.
+//////////////////////////////////////////////////////////////////////////////////////////////
 
-// Random Forest goes here..	Due: Friday, August 12.
+// Decision Tree goes here..	Due: Monday, August 12.
+class DecisionTree
+{
+private:
+	// members go here.
 
-// Naive Bayes goes here..		Due: Friday, August 16.
+public:
+	DecisionTree();
+	~DecisionTree();
+
+	void train();
+	void predict();
+	double score();
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+// Random Forest goes here..	Due: Friday, August 16.
+
+// Naive Bayes goes here..		Due: Friday, August ??.
+
+// Refactor project.			Due: August 23.
+// * cmake files
+// * code structure
+// * comment structure
+// * class implementation
+// * function naming & implementation
 
 // Write the final report..		Due: Friday, August 30. *** very important
 
@@ -369,7 +393,7 @@ PYBIND11_MODULE(models, m)
 
 	// K Nearest Neighbors Class.
 	pybind11::class_<KNearestNeighbors>(m, "KNearestNeighbors", "K Nearest Model, used for classification machine learning tasks.")
-		.def(pybind11::init<>())
+		.def(pybind11::init<int, int>())
 		.def("train", &KNearestNeighbors::train,
 			"stubby."
 		)
