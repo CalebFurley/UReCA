@@ -4,6 +4,7 @@ from sklearn.preprocessing import StandardScaler
 
 from models import LinearRegression
 from models import LogisticRegression
+from models import KNearestNeighbors
 
 scaler = StandardScaler()                                # <------------------- remove standard scaler once testing against my scaler.
 
@@ -36,20 +37,30 @@ diabetes_test_x = (diabetes_test_x - np.mean(diabetes_test_x)) / np.std(diabetes
 # Model Testing
 print("About to train...\n\n")
 
-#Linear-Regression --------------- [Score confirmed accurate vs sk-learn model]
-print("Training Linear Regression Model.")
-model = LinearRegression()
-model.train(housing_train_x, housing_train_y, 0.01, 500)
-model.predict(housing_test_x)
-score = model.score(housing_test_x, housing_test_y)
-print("R^2 Score = ", score, "\n\n")
-del model
+##Linear-Regression --------------- [Score confirmed accurate vs sk-learn model]
+#print("Training Linear Regression Model.")
+#model = LinearRegression()
+#model.train(housing_train_x, housing_train_y, 0.01, 500)
+#model.predict(housing_test_x)
+##print("R^2 Score = ", score, "\n\n")
+#el model
 
-#Logistic-Regression ------------- [WIP]
-print("Training Logistic Regression Model.")
-model = LogisticRegression()
-model.train(diabetes_train_x, diabetes_train_y, 0.01, 500)    # <----- training here [WIP]
+##Logistic-Regression ------------- [WIP]
+#print("Training Logistic Regression Model.")
+#model = LogisticRegression()
+#model.train(diabetes_train_x, diabetes_train_y, 0.01, 500)    # <----- training here [WIP]
+#model.predict(diabetes_test_x)
+#score = model.score(diabetes_test_x, diabetes_test_y)
+#print("R^2 Score = ", score, "\n\n")
+#del model
+
+
+# K Nearest Testing here.
+
+model = KNearestNeighbors(5, 2) # first int is 'k', second is number of classes to vote on.
+
+model.train(diabetes_train_x, diabetes_train_y)
 model.predict(diabetes_test_x)
 score = model.score(diabetes_test_x, diabetes_test_y)
-print("R^2 Score = ", score, "\n\n")
+print("Score[KNN] = ", score, "\n\n")
 del model

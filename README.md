@@ -35,4 +35,21 @@
 	Build Logistic Regression Model
 	- utilize linear regression as a template
 	- import a classification dataset, diabetes?
-	(## CURRENT ##)
+	(completed)
+--------------------------------------------------------------------------------------------------------------------
+	Build K Nearest Neighbors Model
+	- utilize other models as templates
+	- build for classification
+	(completed)
+--------------------------------------------------------------------------------------------------------------------
+	Build Decision Tree Model
+	- watch videos to learn about model
+	- build out in models.cpp
+	(# CURRENT #)
+--------------------------------------------------------------------------------------------------------------------
+	Build Random Forest Model
+	(future)
+--------------------------------------------------------------------------------------------------------------------
+	Build Naive Bayes Model
+	(future)
+--------------------------------------------------------------------------------------------------------------------
