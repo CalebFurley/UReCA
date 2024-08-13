@@ -17,3 +17,5 @@ public:
     Eigen::MatrixXd predict(const Eigen::MatrixXd& data_X);
     double score(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y);
 };
+
+#endif
