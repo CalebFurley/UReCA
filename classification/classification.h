@@ -27,7 +27,7 @@ private:
 	int m_number_of_classes = 0;
 	double euclidean_distance(const Eigen::VectorXd& x1, const Eigen::VectorXd& x2);
 public:
-	KNearestNeighbors(int k, int number_of_classes) : m_k(k), m_number_of_classes(number_of_classes);
+	KNearestNeighbors(int k, int number_of_classes);
 	~KNearestNeighbors();
 	void train(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y);
 	Eigen::MatrixXd predict(const Eigen::MatrixXd& data_X);
