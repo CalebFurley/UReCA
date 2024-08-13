@@ -13,7 +13,7 @@ link_directories(C:/Users/caleb/AppData/Local/Programs/Python/Python311/libs)
 # Include Python Development Eviroment.
 set(Python3_USE_DEBUG_EXTENSION FALSE)
 find_package(Python3 3.11 COMPONENTS Development REQUIRED)
-target_link_libraries(regression PRIVATE Python3::Python)								# SET THE NAME OF THE MODULE
+target_link_libraries(regression PRIVATE Python3::Python)									# SET THE NAME OF THE MODULE
 
 # Include the directory containing the header files (just in case.)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})

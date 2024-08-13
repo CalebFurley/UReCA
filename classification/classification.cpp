@@ -345,7 +345,7 @@ public:
 
 /* Expose models to python module here.
 */
-PYBIND11_MODULE(models, m)
+PYBIND11_MODULE(classification, m)
 {
 	// Linear Regression Class.
 	pybind11::class_<LinearRegression>(m, "LinearRegression", "Linear Regression model, used for numerical machine learning tasks.")
