@@ -43,24 +43,25 @@ print("About to train...\n\n")
 print("Training Linear Regression Model.")
 model = LinearRegression()
 model.train(housing_train_x, housing_train_y, 0.01, 500)
-score = model.predict(housing_test_x)
+model.predict(housing_test_x)
+score = model.score(housing_test_x, housing_test_y)
 print("R^2 Score = ", score, "\n\n")
 del model
 
 # Logistic Regression
-#print("Training Logistic Regression Model.")
-#model = LogisticRegression()
-#model.train(diabetes_train_x, diabetes_train_y, 0.01, 500)    # <----- training here [WIP]
-#model.predict(diabetes_test_x)
-#score = model.score(diabetes_test_x, diabetes_test_y)
-#print("R^2 Score = ", score, "\n\n")
-#del model
+print("Training Logistic Regression Model.")
+model = LogisticRegression()
+model.train(diabetes_train_x, diabetes_train_y, 0.01, 500)    # <----- training here [WIP]
+model.predict(diabetes_test_x)
+score = model.score(diabetes_test_x, diabetes_test_y)
+print("R^2 Score = ", score, "\n\n")
+del model
 
 
 # K Nearest Neighbors
-#model = KNearestNeighbors(5, 2) # first int is 'k', second is number of classes to vote on.
-#model.train(diabetes_train_x, diabetes_train_y)
-#model.predict(diabetes_test_x)
-#score = model.score(diabetes_test_x, diabetes_test_y)
-#print("Score[KNN] = ", score, "\n\n")
-#del model
+model = KNearestNeighbors(5, 2) # first int is 'k', second is number of classes to vote on.
+model.train(diabetes_train_x, diabetes_train_y)
+model.predict(diabetes_test_x)
+score = model.score(diabetes_test_x, diabetes_test_y)
+print("Score[KNN] = ", score, "\n\n")
+del model
