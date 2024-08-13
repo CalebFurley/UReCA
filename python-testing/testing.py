@@ -1,13 +1,8 @@
+# Import External Libs
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
-
-from models import LinearRegression
-from models import LogisticRegression
-from models import KNearestNeighbors
-
-scaler = StandardScaler()                                # <------------------- remove standard scaler once testing against my scaler.
-
+scaler = StandardScaler()
 
 # Import Data Sets
 print("Importing Data.")
@@ -31,21 +26,24 @@ diabetes_test_x, diabetes_test_y = diabetes_test_set.iloc[0:,0:-2].values, diabe
 diabetes_train_x = (diabetes_train_x - np.mean(diabetes_train_x)) / np.std(diabetes_train_x)        # <--------------- Use this math to build
 diabetes_test_x = (diabetes_test_x - np.mean(diabetes_test_x)) / np.std(diabetes_test_x)            # <--------------- scaler for tools module.
 
-####################################################################################################################
+######################################################################################################################################################
+######################################################################################################################################################
 
-
-# Model Testing
+# Import custom models
+from regression import LinearRegression
+from classification import LogisticRegression
+from classification import KNearestNeighbors
 print("About to train...\n\n")
 
-##Linear-Regression --------------- [Score confirmed accurate vs sk-learn model]
-#print("Training Linear Regression Model.")
-#model = LinearRegression()
-#model.train(housing_train_x, housing_train_y, 0.01, 500)
-#model.predict(housing_test_x)
-##print("R^2 Score = ", score, "\n\n")
-#el model
+# Linear Regression
+print("Training Linear Regression Model.")
+model = LinearRegression()
+model.train(housing_train_x, housing_train_y, 0.01, 500)
+score = model.predict(housing_test_x)
+print("R^2 Score = ", score, "\n\n")
+del model
 
-##Logistic-Regression ------------- [WIP]
+# Logistic Regression
 #print("Training Logistic Regression Model.")
 #model = LogisticRegression()
 #model.train(diabetes_train_x, diabetes_train_y, 0.01, 500)    # <----- training here [WIP]
@@ -55,12 +53,10 @@ print("About to train...\n\n")
 #del model
 
 
-# K Nearest Testing here.
-
-model = KNearestNeighbors(5, 2) # first int is 'k', second is number of classes to vote on.
-
-model.train(diabetes_train_x, diabetes_train_y)
-model.predict(diabetes_test_x)
-score = model.score(diabetes_test_x, diabetes_test_y)
-print("Score[KNN] = ", score, "\n\n")
-del model
+# K Nearest Neighbors
+#model = KNearestNeighbors(5, 2) # first int is 'k', second is number of classes to vote on.
+#model.train(diabetes_train_x, diabetes_train_y)
+#model.predict(diabetes_test_x)
+#score = model.score(diabetes_test_x, diabetes_test_y)
+#print("Score[KNN] = ", score, "\n\n")
+#del model

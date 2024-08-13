@@ -299,8 +299,18 @@ public:
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-// Decision Tree goes here..	Due: Monday, August 12.
+// Decision Tree goes here..	Due: Monday, August 13.
+
+//cf This is a helper class for the DecisionTree class
+class TreeNode
+{
+
+};
+
 class DecisionTree
+	// Essentially a giant if else nest, but the conditions are varaible
+	// and the values for the conditions are what are trained to make the best
+	// decision tree.
 {
 private:
 	// members go here.
@@ -321,13 +331,17 @@ public:
 // Naive Bayes goes here..		Due: Friday, August ??.
 
 // Refactor project.			Due: August 23.
-// * cmake files
-// * code structure
-// * comment structure
-// * class implementation
-// * function naming & implementation
+// * cmake files: (Review and cleanup the cmake files)
+// * code structure: (Check variable types like double and float and vectorXD etc) (Optimize the code)
+// * comment structure: (All comments)
+// * class implementation: (Headers? Train vs Constructor params)
+// * function naming & implementation: ( score() vs. accuracy() for naming, params, etc, check the functions and make sure they make since.) 
 
-// Write the final report..		Due: Friday, August 30. *** very important
+///////////////////////////////////////////////////////////////////////////////
+//
+// Write the final report..		Due: Friday, August 30. *** VERY IMPORTANT
+//															--------------
+///////////////////////////////////////////////////////////////////////////////
 
 /* Expose models to python module here.
 */
