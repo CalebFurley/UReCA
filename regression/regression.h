@@ -1,4 +1,4 @@
-//cf Regression Header File
+//cf Definitions for Regression Models.
 
 #ifndef REGRESSION_H
 #define REGRESSION_H

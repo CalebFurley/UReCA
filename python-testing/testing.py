@@ -1,3 +1,7 @@
+# Script for testing python modules with real python code using numpy and pandas
+# with a housing dataset for regression and a diabetes set for classification.
+
+
 # Import External Libs
 import numpy as np
 import pandas as pd
