@@ -42,6 +42,11 @@
 	- build for classification
 	(completed)
 --------------------------------------------------------------------------------------------------------------------
+	Rework Project Structure
+	- Split project into classification and regression
+	- Add headers to help cleanup and modulize the current code.
+	(completed)
+--------------------------------------------------------------------------------------------------------------------
 	Build Decision Tree Model
 	- watch videos to learn about model
 	- build out in models.cpp
