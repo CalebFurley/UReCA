@@ -9,7 +9,9 @@
 
 #include "classification.h";
 
+////////////////////////////////////////
 //cf Logistic Regression Implementation.
+////////////////////////////////////////
 LogisticRegression::LogisticRegression()
 {
 	m_weights.setZero(), m_bias = 0.0;
@@ -76,9 +78,17 @@ double LogisticRegression::score(const Eigen::MatrixXd& data_X, const Eigen::Mat
 	return accuracy;
 }
 
+////////////////////////////////////////
 //cf KNearest Neighbors Implementation.
-KNearestNeighbors::KNearestNeighbors(int k, int number_of_classes) : m_k(k), m_number_of_classes(number_of_classes) {}
-KNearestNeighbors::~KNearestNeighbors() {}
+////////////////////////////////////////
+KNearestNeighbors::KNearestNeighbors(int k, int number_of_classes) : m_k(k), m_number_of_classes(number_of_classes)
+{
+
+}
+KNearestNeighbors::~KNearestNeighbors() 
+{
+
+}
 double KNearestNeighbors::euclidean_distance(const Eigen::VectorXd& x1, const Eigen::VectorXd& x2)
 {
 	return sqrt((x1 - x2).array().square().sum());
@@ -161,7 +171,9 @@ double KNearestNeighbors::score(const Eigen::MatrixXd& data_X, const Eigen::Matr
 	return accuracy;
 }
 
+////////////////////////////////////////
 //cf TreeNode Helper Class Implementation.
+////////////////////////////////////////
 TreeNode::TreeNode()
 {
 
@@ -193,7 +205,9 @@ double DecisionTree::score()
 
 }
 
+////////////////////////////////////////
 //cf Random Forest Implementation.		Due August 16.
+////////////////////////////////////////
 RandomForest::RandomForest()
 {
 
@@ -215,7 +229,9 @@ double RandomForest::score()
 
 }
 
+////////////////////////////////////////
 //cf Naive Bayes Implementation.		Possible Due August 23.
+////////////////////////////////////////
 NaiveBayes::NaiveBayes()
 {
 
