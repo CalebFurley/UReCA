@@ -2,19 +2,6 @@
 # python modules.
 
 
-# Set the path to the modules directory.
-#
-# Not necessary if the modules are in the same
-# directory as the script.
-import sys
-import os
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-modules_path = os.path.join(current_dir, 'modules')
-if modules_path not in sys.path:
-    sys.path.append(modules_path)
-
-
 # Import external libraries.
 import numpy as np
 import pandas as pd
@@ -44,9 +31,9 @@ diabetes_train_x = (diabetes_train_x - np.mean(diabetes_train_x)) / np.std(diabe
 diabetes_test_x = (diabetes_test_x - np.mean(diabetes_test_x)) / np.std(diabetes_test_x)            # <--------------- scaler for tools module.
 
 # Import the generated modules.
-from regression import LinearRegression
-from classification import LogisticRegression
-from classification import KNearestNeighbors
+from regression import LinearRegression # type: ignore
+from classification import LogisticRegression # type: ignore
+from classification import KNearestNeighbors # type: ignore
 print("About to train...\n\n")
 
 # Linear Regression testing.

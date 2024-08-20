@@ -18,7 +18,7 @@ void LinearRegression::train(const Eigen::MatrixXd& data_X, const Eigen::MatrixX
 	Eigen::Index sample_count = data_X.rows();
 	Eigen::Vector<double, Eigen::Dynamic> fwb; fwb.setZero();
 	Eigen::Vector<double, Eigen::Dynamic> dw; dw.setZero();
-	double db = 0.0;
+	double db = 0.0; 
 
 	//cf Set weights and bias to zero.
 	m_weights.resize(feat_count);

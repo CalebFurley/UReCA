@@ -17,8 +17,8 @@ include_directories(${CMAKE_SOURCE_DIR}/external-libraries/eigen)
 add_subdirectory(${CMAKE_SOURCE_DIR}/external-libraries/pybind11)
 
 # Find Python
-find_package(PythonInterp 3.11 REQUIRED)
-find_package(PythonLibs 3.11 REQUIRED)
+find_package(PythonInterp 3.12 REQUIRED)
+find_package(PythonLibs 3.12 REQUIRED)
 
 # Include sub-projects here..
 add_subdirectory ("module-classification")
