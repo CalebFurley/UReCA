@@ -1,4 +1,4 @@
-// Implementation for Classification Models.
+// Classification Module Implementation.
 #include "classification.h";
 
 // Logistic Regression Implementation.

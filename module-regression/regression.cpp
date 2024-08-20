@@ -1,4 +1,4 @@
-// Implementation for Regression Models.
+// Regression Module Implementation.
 #include "regression.h"
 
 // Linear Regression Implementation.
