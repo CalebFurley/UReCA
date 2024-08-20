@@ -159,7 +159,7 @@ double KNearestNeighbors::score(const Eigen::MatrixXd& data_X, const Eigen::Matr
 	return accuracy;
 }
 
-// TreeNode Helper Class Implementation.
+// TreeNode Implementation. (for decision tree)
 TreeNode::TreeNode()
 {
 
