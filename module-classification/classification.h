@@ -84,6 +84,4 @@ public:
 	double score();
 };
 
-
-
 #endif

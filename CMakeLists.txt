@@ -1,7 +1,4 @@
-﻿## CMake file for UReCA project.
-#
-
-# Cmake version
+﻿# CMake file for UReCA project.
 cmake_minimum_required (VERSION 3.8)
 
 # Enable Hot Reload for MSVC compilers if supported.
@@ -26,4 +23,3 @@ find_package(PythonLibs 3.11 REQUIRED)
 # Include sub-projects here..
 add_subdirectory ("module-classification")
 add_subdirectory ("module-regression")
-
