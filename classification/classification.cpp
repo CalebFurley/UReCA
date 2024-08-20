@@ -1,17 +1,7 @@
-//cf Implementation for Classification Models.
-
-#include <pybind11/pybind11.h>
-#include <pybind11/numpy.h>
-#include <pybind11/eigen.h>
-#include <Eigen/Dense>
-#include <iostream>
-#include <cmath>
-
+// Implementation for Classification Models.
 #include "classification.h";
 
-////////////////////////////////////////
-//cf Logistic Regression Implementation.
-////////////////////////////////////////
+// Logistic Regression Implementation.
 LogisticRegression::LogisticRegression()
 {
 	m_weights.setZero(), m_bias = 0.0;
@@ -78,9 +68,7 @@ double LogisticRegression::score(const Eigen::MatrixXd& data_X, const Eigen::Mat
 	return accuracy;
 }
 
-////////////////////////////////////////
-//cf KNearest Neighbors Implementation.
-////////////////////////////////////////
+// KNearest Neighbors Implementation.
 KNearestNeighbors::KNearestNeighbors(int k, int number_of_classes) : m_k(k), m_number_of_classes(number_of_classes)
 {
 
@@ -171,9 +159,7 @@ double KNearestNeighbors::score(const Eigen::MatrixXd& data_X, const Eigen::Matr
 	return accuracy;
 }
 
-////////////////////////////////////////
-//cf TreeNode Helper Class Implementation.
-////////////////////////////////////////
+// TreeNode Helper Class Implementation.
 TreeNode::TreeNode()
 {
 
@@ -183,7 +169,7 @@ TreeNode::~TreeNode()
 
 }
 
-//cf Decision Tree Implementation.		Due August 14.
+// Decision Tree Implementation.
 DecisionTree::DecisionTree()
 {
 
@@ -205,9 +191,7 @@ double DecisionTree::score()
 
 }
 
-////////////////////////////////////////
-//cf Random Forest Implementation.		Due August 16.
-////////////////////////////////////////
+// Random Forest Implementation.
 RandomForest::RandomForest()
 {
 
@@ -229,9 +213,7 @@ double RandomForest::score()
 
 }
 
-////////////////////////////////////////
-//cf Naive Bayes Implementation.		Possible Due August 23.
-////////////////////////////////////////
+// Naive Bayes Implementation.
 NaiveBayes::NaiveBayes()
 {
 
@@ -253,13 +235,7 @@ double NaiveBayes::score()
 
 }
 
-///////////////////////////////////////////////////////////////////////////////
-//
-// Write the final report..		Due: Friday, August 30. *** VERY IMPORTANT
-//															--------------
-///////////////////////////////////////////////////////////////////////////////
-
-//cf Pybind11 Module Generation.
+// Pybind11 Module Generation.
 PYBIND11_MODULE(classification, m)
 {
 	// Logistic Regression Class.

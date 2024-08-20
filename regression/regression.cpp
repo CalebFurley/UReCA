@@ -1,15 +1,7 @@
-//cf Implementation for Regression Models.
-
-#include <pybind11/pybind11.h>
-#include <pybind11/numpy.h>
-#include <pybind11/eigen.h>
-#include <Eigen/Dense>
-#include <iostream>
-#include <cmath>
-
+// Implementation for Regression Models.
 #include "regression.h"
 
-//cf Linear Regression Implementation.
+// Linear Regression Implementation.
 LinearRegression::LinearRegression() 
 {
 	m_weights.setZero(), m_bias = 0.0;
@@ -78,9 +70,9 @@ double LinearRegression::score(const Eigen::MatrixXd& data_X, const Eigen::Matri
 	return r2_score;
 }
 
-//cf Other regression models go here...
+// Other regression models go here...
 
-//cf Pybind11 Module Generation.
+// Pybind11 Module Generation.
 PYBIND11_MODULE(regression, m)
 {
 	// Linear Regression Class.

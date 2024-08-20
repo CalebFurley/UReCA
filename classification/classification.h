@@ -3,7 +3,12 @@
 #ifndef CLASSIFICATION_H
 #define CLASSIFICATION_H
 
-#include <eigen/Dense>
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
+#include <pybind11/eigen.h>
+#include <Eigen/Dense>
+#include <iostream>
+#include <cmath>
 
 class LogisticRegression
 {
@@ -32,6 +37,15 @@ public:
 	void train(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y);
 	Eigen::MatrixXd predict(const Eigen::MatrixXd& data_X);
 	double score(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y);
+};
+
+class TreeNode
+{
+private:
+	// members go here.
+public:
+	TreeNode();
+	~TreeNode();
 };
 
 class DecisionTree
@@ -70,14 +84,6 @@ public:
 	double score();
 };
 
-//cf Helper Class for DecTree and RandFor.
-class TreeNode
-{
-private:
-	// members go here.
-public:
-	TreeNode();
-	~TreeNode();
-};
+
 
 #endif
