@@ -1,19 +1,32 @@
-# Script for testing python modules with real python code using numpy and pandas
-# with a housing dataset for regression and a diabetes set for classification.
+# This is a script for testing the generated
+# python modules.
 
 
-# Import External Libs
+# Set the path to the modules directory.
+#
+# Not necessary if the modules are in the same
+# directory as the script.
+import sys
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+modules_path = os.path.join(current_dir, 'modules')
+if modules_path not in sys.path:
+    sys.path.append(modules_path)
+
+
+# Import external libraries.
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 
-# Import Data Sets
+# Import the data sets for classification and regression.
 print("Importing Data.")
 housing_df = pd.read_csv('C:/Development/source/CalebFurley/UReCA/python-testing/datasets/housing-data.csv')
 diabetes_df = pd.read_csv('C:/Development/source/CalebFurley/UReCA/python-testing/datasets/diabetes-data.csv')
 
-# Preprocess Housing Data
+# Preprocess the regression housing data set.
 print("Preprocessing Housing Data.")
 housing_df = housing_df.replace({'yes':1.0, 'no':0.0, 'furnished':1.0, 'semi-furnished':0.5, 'unfurnished':0.0})
 housing_train,housing_test = np.split(housing_df.sample(frac=1),[400],axis=0)
@@ -22,7 +35,7 @@ housing_test_x, housing_test_y = housing_test.iloc[0:, 1:].values, housing_test[
 housing_train_x = scaler.fit_transform(housing_train_x)
 housing_test_x = scaler.transform(housing_test_x)
 
-# Preprocess Diabetes Data
+# Preprocess the diabetes classification data set.
 print("Preprocessing Diabetes Data.")
 diabetes_train_set, diabetes_test_set = np.split(diabetes_df.sample(frac=1),[450],axis=0)
 diabetes_train_x, diabetes_train_y = diabetes_train_set.iloc[0:,0:-2].values, diabetes_train_set.iloc[0:,-1].values
@@ -30,16 +43,13 @@ diabetes_test_x, diabetes_test_y = diabetes_test_set.iloc[0:,0:-2].values, diabe
 diabetes_train_x = (diabetes_train_x - np.mean(diabetes_train_x)) / np.std(diabetes_train_x)        # <--------------- Use this math to build
 diabetes_test_x = (diabetes_test_x - np.mean(diabetes_test_x)) / np.std(diabetes_test_x)            # <--------------- scaler for tools module.
 
-######################################################################################################################################################
-######################################################################################################################################################
-
-# Import custom models
+# Import the generated modules.
 from regression import LinearRegression
 from classification import LogisticRegression
 from classification import KNearestNeighbors
 print("About to train...\n\n")
 
-# Linear Regression
+# Linear Regression testing.
 print("Training Linear Regression Model.")
 model = LinearRegression()
 model.train(housing_train_x, housing_train_y, 0.01, 500)
@@ -48,7 +58,7 @@ score = model.score(housing_test_x, housing_test_y)
 print("R^2 Score = ", score, "\n\n")
 del model
 
-# Logistic Regression
+# Logistic regression testing.
 print("Training Logistic Regression Model.")
 model = LogisticRegression()
 model.train(diabetes_train_x, diabetes_train_y, 0.01, 500)    # <----- training here [WIP]
@@ -57,11 +67,14 @@ score = model.score(diabetes_test_x, diabetes_test_y)
 print("R^2 Score = ", score, "\n\n")
 del model
 
-
-# K Nearest Neighbors
+# KNN testing.
 model = KNearestNeighbors(5, 2) # first int is 'k', second is number of classes to vote on.
 model.train(diabetes_train_x, diabetes_train_y)
 model.predict(diabetes_test_x)
 score = model.score(diabetes_test_x, diabetes_test_y)
 print("Score[KNN] = ", score, "\n\n")
 del model
+
+# Random Forest testing.
+
+# TODO: Implement Random Forest module.
