@@ -1,12 +1,5 @@
-﻿## GLOBAL CMake for ureca project.
-#
-
-# Set the minimum version of CMake required to build the project.
+﻿# CMake file for UReCA project.
 cmake_minimum_required (VERSION 3.8)
-
-# !!! Important !!! Set the toolchain file to the vcpkg.cmake file in your vcpkg directory.
-set(CMAKE_TOOLCHAIN_FILE "C:/Development/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake")
-
 
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
@@ -17,10 +10,17 @@ endif()
 # Set the solution name.
 project ("UReCA")
 
-# Inlcude Eigen module for linear algebra.
-include_directories(${CMAKE_SOURCE_DIR}/external/eigen)
+# Include Eigen module for linear algebra.
+include_directories(${CMAKE_SOURCE_DIR}/external-libraries/eigen)
+
+# Include pybind11 module
+add_subdirectory(${CMAKE_SOURCE_DIR}/external-libraries/pybind11)
+
+# Find Python
+find_package(PythonInterp 3.11 REQUIRED)
+find_package(PythonLibs 3.11 REQUIRED)
 
 # Include sub-projects here..
-add_subdirectory (pybind11) # Include the pybind11 library first.
-add_subdirectory ("classification")
-add_subdirectory ("regression") 
+add_subdirectory ("module-classification")
+add_subdirectory ("module-regression")
+
