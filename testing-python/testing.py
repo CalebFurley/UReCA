@@ -1,6 +1,9 @@
 # This is a script for testing the generated
 # python modules.
 
+# Get the current directory.
+import os
+current_directory = os.getcwd()
 
 # Import external libraries.
 import numpy as np
@@ -10,8 +13,8 @@ scaler = StandardScaler()
 
 # Import the data sets for classification and regression.
 print("Importing Data.")
-housing_df = pd.read_csv('C:/Development/source/CalebFurley/UReCA/testing-python/datasets/housing-data.csv')
-diabetes_df = pd.read_csv('C:/Development/source/CalebFurley/UReCA/testing-python/datasets/diabetes-data.csv')
+housing_df = pd.read_csv(f"{current_directory}/testing-python/datasets/housing-data.csv")
+diabetes_df = pd.read_csv(f"{current_directory}/testing-python/datasets/diabetes-data.csv")
 
 # Preprocess the regression housing data set.
 print("Preprocessing Housing Data.")
