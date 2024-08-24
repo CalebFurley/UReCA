@@ -1,5 +1,11 @@
 
 # UReCA Summer Project 2024
+
+
+	To generate the python modules. Build the project using cmake and move the generated python modules into your
+	python project directory.
+
+
 	This is a Library built in regards to my summer UReCA fellowship. It is a Python module for machine learning split
 	into two parts. First being the models themselves which can be imported with "import models" and the second being
 	the tools which can be imported with "import tools".
