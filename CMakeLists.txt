@@ -11,14 +11,15 @@ endif()
 project ("UReCA")
 
 # Include Eigen module for linear algebra.
-include_directories(${CMAKE_SOURCE_DIR}/external-libraries/eigen)
+include_directories(${CMAKE_SOURCE_DIR}/libraries/eigen)
 
 # Include pybind11 module
-add_subdirectory(${CMAKE_SOURCE_DIR}/external-libraries/pybind11)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/pybind11)
 
 # Find Python
 find_package(Python 3.12 REQUIRED COMPONENTS Interpreter Development)
 
 # Include sub-projects here..
-add_subdirectory ("module-classification")
-add_subdirectory ("module-regression")
+add_subdirectory ("modules/classification")
+add_subdirectory ("modules/regression")
+add_subdirectory ("modules/toolset")
