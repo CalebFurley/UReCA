@@ -41,8 +41,8 @@ print("About to train...\n\n")
 
 # Linear Regression testing.
 print("Training Linear Regression Model.")
-model = LinearRegression()
-model.train(housing_train_x, housing_train_y, 0.01, 500)
+model = LinearRegression(.01, 500)
+model.train(housing_train_x, housing_train_y)
 model.predict(housing_test_x)
 score = model.score(housing_test_x, housing_test_y)
 print("R^2 Score = ", score, "\n\n")
@@ -50,8 +50,8 @@ del model
 
 # Logistic regression testing.
 print("Training Logistic Regression Model.")
-model = LogisticRegression()
-model.train(diabetes_train_x, diabetes_train_y, 0.01, 500)
+model = LogisticRegression(.01, 500)
+model.train(diabetes_train_x, diabetes_train_y)
 model.predict(diabetes_test_x)
 score = model.score(diabetes_test_x, diabetes_test_y)
 print("R^2 Score = ", score, "\n\n")

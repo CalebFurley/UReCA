@@ -1,83 +1,99 @@
-// Regression Module Implementation.
+//regression module implementaion.
 #include "regression.h"
 
-// Linear Regression Implementation.
-LinearRegression::LinearRegression() 
+//linear regression constructor.
+LinearRegression::LinearRegression(float learning_rate, int iterations)
+  : m_learning_rate(learning_rate), m_iterations(iterations)
 {
-	m_weights.setZero(), m_bias = 0.0;
+	m_weights.setZero(); 
+	m_bias = 0.0;
 }
+
+//linear regression destructor.
 LinearRegression::~LinearRegression() 
 {
-	m_weights.setZero(); m_bias = 0.0;
+	m_weights.setZero(); 
+	m_bias = 0.0;
 }
-void LinearRegression::train(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y, float alpha, int epochs)
-{
-	//cf Declare and init training variables.
-	double cost = 0.0;
-	Eigen::Index feat_count = data_X.cols();
-	Eigen::Index sample_count = data_X.rows();
-	Eigen::Vector<double, Eigen::Dynamic> fwb; fwb.setZero();
-	Eigen::Vector<double, Eigen::Dynamic> dw; dw.setZero();
-	double db = 0.0; 
 
-	//cf Set weights and bias to zero.
+//linear regression training method implementation.
+void LinearRegression::train(const Eigen::MatrixXd& data_x, const Eigen::MatrixXd& data_y)
+{
+//declare local training variables.
+	double cost; 																								//cost of the model (error)
+	Eigen::Index feat_count;																 	  //number of features in the dataset (columns)
+	Eigen::Index sample_count; 																	//number of samples in the dataset (rows)
+	Eigen::Vector<double, Eigen::Dynamic> features_with_bias;   //the linear equation including weights and bias
+	Eigen::Vector<double, Eigen::Dynamic> delta_weights; 				//the weights when being updated through gradient descent
+	double delta_bias;			 																		//the bias when being updated through gradient descent
+
+//initialize member variables.
+	cost = 0.0;
+	feat_count = data_x.cols();
+	sample_count = data_x.rows();
+	features_with_bias.setZero();
+	delta_weights.setZero();
+	delta_bias = 0.0;
+
+//initialize member variables.
 	m_weights.resize(feat_count);
 	m_weights.setZero();
 	m_bias = 0.0;
 
-	//cf Perform Gradiant Descent
-	for (int epoch = 0; epoch < epochs; ++epoch)
+//perform Gradiant Descent.
+	for (int iteration = 0; iteration < m_iterations; ++iteration)
 	{
-		//cf Calculate linear function across all samples.
-		fwb = (data_X * m_weights);
-		fwb = fwb.array() + m_bias;
+	//calculate linear function across all samples.
+		features_with_bias = (data_x * m_weights);
+		features_with_bias = features_with_bias.array() + m_bias;
 
-		//cf Calculate cost with current function.
-		cost = (fwb - data_Y).squaredNorm();
+	//calculate cost with current function.
+		cost = (features_with_bias - data_y).squaredNorm();
 		cost /= 2 * sample_count;
 
-		//cf Calculate gradient for current function.
-		dw = (1.0 / (double)sample_count) * (data_X.transpose() * (fwb - data_Y));
-		db = ((1.0 / (double)feat_count) * (fwb - data_Y)).sum();
+	//calculate gradient for current function.
+		delta_weights = (1.0 / (double)sample_count) * (data_x.transpose() * (features_with_bias - data_y));
+		delta_bias = ((1.0 / (double)feat_count) * (features_with_bias - data_y)).sum();
 
-		//cf Update weights and bias
+	//update weights and bias.
 		for (int j = 0; j < m_weights.size(); j++)
 		{
-			m_weights(j) = m_weights(j) - alpha * dw(j);
+			m_weights(j) = m_weights(j) - m_learning_rate * delta_weights(j);
 		}
-		m_bias = m_bias - alpha * db;
+		m_bias = m_bias - m_learning_rate * delta_bias;
 	}
 }
+
+//linear regression prediction method.
 Eigen::MatrixXd LinearRegression::predict(const Eigen::MatrixXd& data_X)
 {
-	//cf Multiply weights on all data then apply bias and return.
-	Eigen::MatrixXd predictions = (data_X * m_weights).array() + m_bias;
+//multiply weights on all data then apply bias and return.
+	Eigen::MatrixXd predictions;
+	predictions = (data_X * m_weights).array() + m_bias;
 	return predictions;
 }
+
+//linear regression scoring method. uses r2.
 double LinearRegression::score(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y)
 {
-	//cf Use model to get predictions.
+//use model to get predictions.
 	Eigen::MatrixXd predictions = predict(data_X);
 
-	//cf Calculate the total & residual sum of squares.
+//calculate and return r2 score.
 	double total_variance = (data_Y.array() - data_Y.mean()).square().sum();
 	double residual_variance = (data_Y.array() - predictions.array()).square().sum();
-
-	//cf Calculate R^2 score.
 	double r2_score = 1 - (residual_variance / total_variance);
-
-	//cf Return the R^2 score.
 	return r2_score;
 }
 
-// Other regression models go here...
+//other regression models go here..
 
-// Pybind11 Module Generation.
+//pybind11 module generation.
 PYBIND11_MODULE(regression, m)
 {
-	// Linear Regression Class.
+//linear regression class.
 	pybind11::class_<LinearRegression>(m, "LinearRegression", "Linear Regression model, used for numerical machine learning tasks.")
-		.def(pybind11::init<>())
+		.def(pybind11::init<float, int>())
 		.def("train", &LinearRegression::train,
 			"Summary:\n"
 			"	This method is used to train the model.\n\n"

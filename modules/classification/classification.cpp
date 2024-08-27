@@ -1,127 +1,153 @@
-// Classification Module Implementation.
+//classification module implementation.
 #include "classification.h"
 
-// Logistic Regression Implementation.
-LogisticRegression::LogisticRegression()
+//logistic Regression Implementation.
+LogisticRegression::LogisticRegression(float learning_rate, int iterations)
+	: m_learning_rate(learning_rate), m_iterations(iterations)
 {
-	m_weights.setZero(), m_bias = 0.0;
+	m_weights.setZero();
+	m_bias = 0.0;
 }
+
+//logistic regression destructor.
 LogisticRegression::~LogisticRegression()
 {
-	m_weights.setZero(); m_bias = 0.0;
+	m_weights.setZero();
+	m_bias = 0.0;
 }
-void LogisticRegression::train(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y, float alpha, int epochs)
-{
-	//cf Local training variables.
-	double cost = 0.0;
-	Eigen::Index feat_count = data_X.cols();
-	Eigen::Index sample_count = data_X.rows();
-	Eigen::Vector<double, Eigen::Dynamic> fwb; fwb.setZero();
-	Eigen::Vector<double, Eigen::Dynamic> dw; dw.setZero();
-	double db = 0.0;
 
-	//cf Set weights and bias to zero.
+//logistic regression training method implementation.
+void LogisticRegression::train(const Eigen::MatrixXd& data_x, const Eigen::MatrixXd& data_y)
+{
+//declare local training variables.
+	double cost; 																								//cost of the model (error)
+	Eigen::Index feat_count;																 	  //number of features in the dataset (columns)
+	Eigen::Index sample_count; 																	//number of samples in the dataset (rows)
+	Eigen::Vector<double, Eigen::Dynamic> features_with_bias;   //the linear equation including weights and bias
+	Eigen::Vector<double, Eigen::Dynamic> delta_weights; 				//the weights when being updated through gradient descent
+	double delta_bias;			 																		//the bias when being updated through gradient descent
+
+//initialize member variables.
+	cost = 0.0;
+	feat_count = data_x.cols();
+	sample_count = data_x.rows();
+	features_with_bias.setZero();
+	delta_weights.setZero();
+	delta_bias = 0.0;
+
+//initialize member variables.
 	m_weights.resize(feat_count);
 	m_weights.setZero();
 	m_bias = 0.0;
 
-	//cf Perform gradient descent.
-	for (int epoch = 0; epoch < epochs; ++epoch)
+//perform gradient descent.
+	for (int iteration = 0; iteration < m_iterations; ++iteration)
 	{
-		//cf Calculate linear function across all samples.
-		fwb = (data_X * m_weights).array() + m_bias;
-		Eigen::VectorXd sigmoid = 1.0 / (1.0 + (-fwb).array().exp());
+	//calculate linear function across all samples.
+		features_with_bias = (data_x * m_weights).array() + m_bias;
+		Eigen::VectorXd sigmoid = 1.0 / (1.0 + (-features_with_bias).array().exp());
 
-		//cf Calculate cost with current function.
-		cost = -(data_Y.array() * fwb.array().log() + (1 - data_Y.array()) * (1 - fwb.array()).log()).mean();
+	//calculate cost with current function.
+		cost = -(data_y.array() * features_with_bias.array().log() + (1 - data_y.array()) * (1 - features_with_bias.array()).log()).mean();
 
-		//cf Calculate gradient for current function.
-		dw = (1.0 / sample_count) * (data_X.transpose() * (sigmoid - data_Y));
-		db = (1.0 / sample_count) * (sigmoid - data_Y).sum();
+	//clculate gradient for current function.
+		delta_weights = (1.0 / sample_count) * (data_x.transpose() * (sigmoid - data_y));
+		delta_bias = (1.0 / sample_count) * (sigmoid - data_y).sum();
 
-		//cf Update weights and bias
+	//update weights and bias.
 		for (int j = 0; j < m_weights.size(); j++)
 		{
-			m_weights(j) = m_weights(j) - alpha * dw(j);
+			m_weights(j) = m_weights(j) - m_learning_rate * delta_weights(j);
 		}
-		m_bias = m_bias - alpha * db;
+		m_bias = m_bias - m_learning_rate * delta_bias;
 	}
 }
+
+//logistic regression prediction method implementation.
 Eigen::MatrixXd LogisticRegression::predict(const Eigen::MatrixXd& data_X)
 {
-	//cf Multiply weights on all data then apply bias.
+//multiply weights on all data then apply bias.
 	Eigen::MatrixXd linear_combination = (data_X * m_weights).array() + m_bias;
-	//cf Apply the sigmoid function to each element to get probabilities.
+//apply the sigmoid function to each element to get probabilities.
 	Eigen::MatrixXd predictions = 1.0 / (1.0 + (-linear_combination).array().exp());
 	return predictions;
 }
+
+//logistic regression score method implementation.
 double LogisticRegression::score(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y)
 {
 	Eigen::MatrixXd predictions = predict(data_X);
-	//cf Threshold predictions to get binary outcomes.
+//threshold predictions to get binary outcomes.
 	predictions = (predictions.array() >= 0.5).cast<double>();
 
-	//cf Calculate accuracy.
+//calculate and return accuracy.
 	double correct_predictions = (predictions.array() == data_Y.array()).cast<double>().sum();
 	double accuracy = correct_predictions / data_Y.rows();
-
 	return accuracy;
 }
 
-// KNearest Neighbors Implementation.
-KNearestNeighbors::KNearestNeighbors(int k, int number_of_classes) : m_k(k), m_number_of_classes(number_of_classes)
+//knearst neighbors contstructor implementation.
+KNearestNeighbors::KNearestNeighbors(int number_neighbors, int number_classes) 
+	: m_number_neighbors(number_neighbors), m_number_classes(number_classes)
 {
-
 }
+
+//knearest neighbors destructor implementation.
 KNearestNeighbors::~KNearestNeighbors() 
 {
-
 }
+
+//euclidean distance helper method implementation.
 double KNearestNeighbors::euclidean_distance(const Eigen::VectorXd& x1, const Eigen::VectorXd& x2)
 {
 	return sqrt((x1 - x2).array().square().sum());
 }
+
+//knearest neighbors training method implementation.
 void KNearestNeighbors::train(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y)
 {
+	//lazy training, just store the data.
 	m_data_X = data_X;
 	m_data_Y = data_Y;
 }
+
+//knearest neighbors prediction method implementation.
 Eigen::MatrixXd KNearestNeighbors::predict(const Eigen::MatrixXd& data_X)
 {
-	// Stores all predictions.
+//stores all predictions.
 	Eigen::MatrixXd predictions(data_X.rows(), 1);
 
-	// For all inputs, run through full KNN algorithm.
+//for all inputs, run through full KNN algorithm.
 	for (int i = 0; i < data_X.rows(); ++i)
 	{
-		// Vector pair for index and calculated distance(cost)
+	//vector pair for index and calculated distance(cost)
 		std::vector<std::pair<double, int>> distances;
 
-		// Compute distance between input(i) and points(j)
+	//compute distance between input(i) and points(j)
 		for (int j = 0; j < m_data_X.rows(); ++j)
 		{
 			double dist = euclidean_distance(data_X.row(i), m_data_X.row(j));
 			distances.push_back(std::make_pair(dist, j));
 		}
 
-		// Sort the distances.
+	//sort the distances.
 		std::sort(distances.begin(), distances.end());
 
-		// Get the closest k neighbors.
+	//get the closest k neighbors.
 		std::vector<int> neighbors;
-		for (int k = 0; k < m_k; ++k)
+		for (int k = 0; k < m_number_neighbors; ++k)
 		{
 			neighbors.push_back(m_data_Y(distances[k].second));
 		}
 
-		// Create vector to store counts for voting.
-		std::vector<int> class_count(m_number_of_classes, 0);
+	//create vector to store counts for voting.
+		std::vector<int> class_count(m_number_classes, 0);
 		for (int k = 0; k < neighbors.size(); ++k)
 		{
 			class_count[static_cast<int>(neighbors[k])]++;
 		}
 
-		// Majority Vote for prediction.
+	//majority Vote for prediction.
 		int predicted_class = -1;
 		int max_count = -1;
 		for (int c = 0; c < class_count.size(); ++c)
@@ -133,18 +159,20 @@ Eigen::MatrixXd KNearestNeighbors::predict(const Eigen::MatrixXd& data_X)
 			}
 		}
 
-		// Set predictions[i] with the prediction for that point.
+	//set predictions[i] with the prediction for that point.
 		predictions(i, 0) = predicted_class;
 	}
-
+//return predictions.
 	return predictions;
 }
+
+//knearest neighbors score method implementation.
 double KNearestNeighbors::score(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y)
 {
-	// Predict the labels for the input data
+//predict the labels for the input data
 	Eigen::MatrixXd predictions = predict(data_X);
 
-	// Count the number of correct predictions
+//count the number of correct predictions
 	int correct_predictions = 0;
 	for (int i = 0; i < data_Y.rows(); ++i)
 	{
@@ -153,13 +181,12 @@ double KNearestNeighbors::score(const Eigen::MatrixXd& data_X, const Eigen::Matr
 			correct_predictions++;
 		}
 	}
-
-	// Calculate accuracy
+//calculate and return accuracy
 	double accuracy = static_cast<double>(correct_predictions) / data_Y.rows();
 	return accuracy;
 }
 
-// TreeNode Implementation. (for decision tree)
+//treeNode Implementation. (for decision tree)
 TreeNode::TreeNode()
 {
 
@@ -169,7 +196,7 @@ TreeNode::~TreeNode()
 
 }
 
-// Decision Tree Implementation.
+//decision tree implementation.
 DecisionTree::DecisionTree()
 {
 
@@ -191,7 +218,7 @@ double DecisionTree::score()
 	return 0.0;
 }
 
-// Random Forest Implementation.
+//random forest implementation.
 RandomForest::RandomForest()
 {
 
@@ -213,7 +240,7 @@ double RandomForest::score()
 	return 0.0;
 }
 
-// Naive Bayes Implementation.
+//naive bayes implementation.
 NaiveBayes::NaiveBayes()
 {
 
@@ -235,12 +262,12 @@ double NaiveBayes::score()
 	return 0.0;
 }
 
-// Pybind11 Module Generation.
+//pybind11 module generation.
 PYBIND11_MODULE(classification, m)
 {
-	// Logistic Regression Class.
+//logistic regression class.
 	pybind11::class_<LogisticRegression>(m, "LogisticRegression", "Logistic Regression model, used for classification machine learning tasks.")
-		.def(pybind11::init<>())
+		.def(pybind11::init<float, int>())
 		.def("train", &LogisticRegression::train,
 			"Summary:\n"
 			"	This method is used to train the model.\n\n"
@@ -267,7 +294,7 @@ PYBIND11_MODULE(classification, m)
 			"Returns:\n"
 			"	double: the R^2 score for the model.");
 
-	// K Nearest Neighbors Class.
+//knearest neighbors class.
 	pybind11::class_<KNearestNeighbors>(m, "KNearestNeighbors", "K Nearest Model, used for classification machine learning tasks.")
 		.def(pybind11::init<int, int>())
 		.def("train", &KNearestNeighbors::train,

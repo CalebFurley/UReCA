@@ -1,4 +1,4 @@
-// Classification Module Headers.
+//classification module headers.
 
 #ifndef CLASSIFICATION_H
 #define CLASSIFICATION_H
@@ -10,48 +10,71 @@
 #include <iostream>
 #include <cmath>
 
+/////////////////////////////////////////////////////////////////////////////
+
+//logistic regression prototype.
 class LogisticRegression
 {
 private:
+//weights and bias
 	Eigen::VectorXd m_weights;
 	double m_bias;
+//hyper parameters
+	float m_learning_rate;
+	int m_iterations;
 public:
-	LogisticRegression();
+//constructors
+	LogisticRegression(float learning_rate, int iterations); //add hyperparameters here.
 	~LogisticRegression();
-	void train(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y, float alpha, int epochs);
+//core triple methods.
+	void train(const Eigen::MatrixXd& data_x, const Eigen::MatrixXd& data_y);
 	Eigen::MatrixXd predict(const Eigen::MatrixXd& data_X);
-	double score(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y);
+	double score(const Eigen::MatrixXd& data_x, const Eigen::MatrixXd& data_y);
 };
 
+/////////////////////////////////////////////////////////////////////////////
+
+//knearest neighbors prototype.
 class KNearestNeighbors
 {
 private:
+//data members (lazy learning)
 	Eigen::MatrixXd m_data_X;
 	Eigen::VectorXd m_data_Y;
-	int m_k = 0; //cf number of neighbors.
-	int m_number_of_classes = 0;
+//hyper parameters.
+	int m_number_neighbors = 0;
+	int m_number_classes = 0;
+//helper methods.
 	double euclidean_distance(const Eigen::VectorXd& x1, const Eigen::VectorXd& x2);
 public:
-	KNearestNeighbors(int k, int number_of_classes);
+//constructors.
+	KNearestNeighbors(int number_neighbors, int number_classes);
 	~KNearestNeighbors();
-	void train(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y);
+//core triple methods.
+	void train(const Eigen::MatrixXd& data_x, const Eigen::MatrixXd& data_y);
 	Eigen::MatrixXd predict(const Eigen::MatrixXd& data_X);
-	double score(const Eigen::MatrixXd& data_X, const Eigen::MatrixXd& data_Y);
+	double score(const Eigen::MatrixXd& data_x, const Eigen::MatrixXd& data_y);
 };
 
+/////////////////////////////////////////////////////////////////////////////
+
+//tree node helper class prototype.
 class TreeNode
 {
 private:
-	// members go here.
+//members go here.
 public:
 	TreeNode();
 	~TreeNode();
 };
 
+/////////////////////////////////////////////////////////////////////////////
+
+//decision tree prototype.
 class DecisionTree
 {
 private:
-	// members go here.
+//members go here.
 public:
 	DecisionTree();
 	~DecisionTree();
@@ -60,10 +83,13 @@ public:
 	double score();
 };
 
+/////////////////////////////////////////////////////////////////////////////
+
+//random forest prototype.
 class RandomForest
 {
 private:
-	// members go here.
+//members go here.
 public:
 	RandomForest();
 	~RandomForest();
@@ -72,10 +98,13 @@ public:
 	double score();
 };
 
+/////////////////////////////////////////////////////////////////////////////
+
+//naive bayes prototype.
 class NaiveBayes
 {
 private:
-	// members go here.
+//members go here.
 public:
 	NaiveBayes();
 	~NaiveBayes();
