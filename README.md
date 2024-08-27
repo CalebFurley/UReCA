@@ -15,7 +15,7 @@ extension allowed me to begin development on a sklearn type library to gain a be
 language development, cross platform development, and of course machine learning as a whole.
 
 The Library is written in c++ and as mentioned before utilizes cmake to generate python modules when can be used
-with any python script. Currently there is only support for python 3.12.
+with any python script. The library suppot Python 3.12 and Numpy.
 
 # External Libraries
 
