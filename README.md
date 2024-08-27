@@ -69,7 +69,10 @@ Full Project Refactor
 - Rewrite models to match new prototypes
 - Refactor test-enviroment for python
 - Check every file in repository and clean code/comments
-(current)
+(complete)
+--------------------------------------------------------------------------------------------------------------------
+  Build Scaler
+- scales data using std and mean
 --------------------------------------------------------------------------------------------------------------------
 Build Decision Tree Model
 - watch videos to learn about model
