@@ -52,4 +52,4 @@ The external libraries used in the project include pybind11 for Python module ge
   - Watch videos to learn about the model.
   - Build out in models.cpp.
 - Build Random Forest Model.
-- Build Naive Bayes Model.
+- Build Naive Bayes Model
